@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import org.w3c.dom.css.RGBColor;
 
 /**
@@ -41,7 +42,9 @@ public class WinDub extends javax.swing.JFrame {
         btNovo = new javax.swing.JButton();
         btAbrir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        btMinimizar = new javax.swing.JLabel();
         frameDrag = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,6 +57,7 @@ public class WinDub extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 204, 204));
         jLabel2.setText("x");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
@@ -77,6 +81,7 @@ public class WinDub extends javax.swing.JFrame {
         btNovo.setFocusPainted(false);
         btNovo.setMaximumSize(new java.awt.Dimension(150, 150));
         btNovo.setMinimumSize(new java.awt.Dimension(150, 150));
+        btNovo.setOpaque(true);
         btNovo.setPreferredSize(new java.awt.Dimension(150, 150));
         btNovo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -103,6 +108,7 @@ public class WinDub extends javax.swing.JFrame {
         btAbrir.setFocusPainted(false);
         btAbrir.setMaximumSize(new java.awt.Dimension(150, 150));
         btAbrir.setMinimumSize(new java.awt.Dimension(150, 150));
+        btAbrir.setOpaque(true);
         btAbrir.setPreferredSize(new java.awt.Dimension(150, 150));
         btAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -119,6 +125,24 @@ public class WinDub extends javax.swing.JFrame {
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, 0, 430, 515);
 
+        btMinimizar.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
+        btMinimizar.setForeground(new java.awt.Color(204, 204, 204));
+        btMinimizar.setText("_");
+        btMinimizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btMinimizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btMinimizarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btMinimizarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btMinimizarMouseExited(evt);
+            }
+        });
+        getContentPane().add(btMinimizar);
+        btMinimizar.setBounds(815, 2, 14, 20);
+
         frameDrag.setForeground(new java.awt.Color(255, 255, 255));
         frameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -132,6 +156,11 @@ public class WinDub extends javax.swing.JFrame {
         });
         getContentPane().add(frameDrag);
         frameDrag.setBounds(0, 0, 860, 515);
+
+        jLabel3.setForeground(new java.awt.Color(100, 120, 120));
+        jLabel3.setText("v 1.0.2");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(804, 474, 60, 40);
 
         jPanel2.setBackground(new java.awt.Color(30, 60, 60));
 
@@ -161,31 +190,31 @@ public class WinDub extends javax.swing.JFrame {
     private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
         // TODO add your handling code here:
         jLabel2.setForeground(new Color(234, 234, 234));
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_jLabel2MouseEntered
 
     private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
         // TODO add your handling code here:
         jLabel2.setForeground(new Color(204, 204, 204));
-        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jLabel2MouseExited
 
     private void btAbrirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btAbrirMouseEntered
         // TODO add your handling code here:
-        //btAbrir.setIcon(new ImageIcon("src/img/novoHover.png"));
+        btAbrir.setBackground(new Color(45, 90, 90));
     }//GEN-LAST:event_btAbrirMouseEntered
     
     private void btAbrirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btAbrirMouseExited
         // TODO add your handling code here:
-        //btAbrir.setIcon(new ImageIcon("src/img/novo.png"));
+        btAbrir.setBackground(new Color(30, 60, 60));
     }//GEN-LAST:event_btAbrirMouseExited
  
     private void btNovoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btNovoMouseEntered
         // TODO add your handling code here:
+        btNovo.setBackground(new Color(45, 90, 90));
     }//GEN-LAST:event_btNovoMouseEntered
 
     private void btNovoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btNovoMouseExited
         // TODO add your handling code here:
+        btNovo.setBackground(new Color(30, 60, 60));
     }//GEN-LAST:event_btNovoMouseExited
 
     private void frameDragMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_frameDragMouseDragged
@@ -231,6 +260,21 @@ public class WinDub extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btNovoActionPerformed
 
+    private void btMinimizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btMinimizarMouseClicked
+        // TODO add your handling code here:
+        this.setState(ICONIFIED);
+    }//GEN-LAST:event_btMinimizarMouseClicked
+
+    private void btMinimizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btMinimizarMouseEntered
+        // TODO add your handling code here:
+        btMinimizar.setForeground(new Color(234, 234, 234));
+    }//GEN-LAST:event_btMinimizarMouseEntered
+
+    private void btMinimizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btMinimizarMouseExited
+        // TODO add your handling code here:
+        btMinimizar.setForeground(new Color(204, 204, 204));
+    }//GEN-LAST:event_btMinimizarMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -258,6 +302,12 @@ public class WinDub extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+        }
+        
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -289,10 +339,12 @@ public class WinDub extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAbrir;
+    private javax.swing.JLabel btMinimizar;
     private javax.swing.JButton btNovo;
     private javax.swing.JLabel frameDrag;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

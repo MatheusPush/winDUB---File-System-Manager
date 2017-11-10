@@ -45,6 +45,7 @@ public class WinDub extends javax.swing.JFrame {
         btMinimizar = new javax.swing.JLabel();
         frameDrag = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        lblBemVindo = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,8 +74,10 @@ public class WinDub extends javax.swing.JFrame {
         jLabel2.setBounds(838, 2, 14, 20);
 
         btNovo.setBackground(new java.awt.Color(30, 60, 60));
-        btNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/novo.png"))); // NOI18N
-        btNovo.setToolTipText("Novo Arquivo");
+        btNovo.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        btNovo.setForeground(new java.awt.Color(255, 255, 255));
+        btNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/novo_1.png"))); // NOI18N
+        btNovo.setText("Novo Arquivo");
         btNovo.setBorderPainted(false);
         btNovo.setContentAreaFilled(false);
         btNovo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -97,11 +100,13 @@ public class WinDub extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btNovo);
-        btNovo.setBounds(570, 90, 150, 150);
+        btNovo.setBounds(525, 168, 240, 80);
 
         btAbrir.setBackground(new java.awt.Color(30, 60, 60));
-        btAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/abrir.png"))); // NOI18N
-        btAbrir.setToolTipText("Abrir Arquivo");
+        btAbrir.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        btAbrir.setForeground(new java.awt.Color(255, 255, 255));
+        btAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/abrir_1.png"))); // NOI18N
+        btAbrir.setText("Abrir Arquivo");
         btAbrir.setBorderPainted(false);
         btAbrir.setContentAreaFilled(false);
         btAbrir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -119,7 +124,7 @@ public class WinDub extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btAbrir);
-        btAbrir.setBounds(570, 260, 150, 150);
+        btAbrir.setBounds(525, 268, 240, 80);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/back.png"))); // NOI18N
         getContentPane().add(jLabel1);
@@ -161,6 +166,35 @@ public class WinDub extends javax.swing.JFrame {
         jLabel3.setText("v 1.0.2");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(804, 474, 60, 40);
+
+        lblBemVindo.setBackground(new java.awt.Color(30, 60, 60));
+        lblBemVindo.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
+        lblBemVindo.setForeground(new java.awt.Color(204, 204, 204));
+        lblBemVindo.setText("Bem vindo!");
+        lblBemVindo.setBorderPainted(false);
+        lblBemVindo.setContentAreaFilled(false);
+        lblBemVindo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblBemVindo.setFocusPainted(false);
+        lblBemVindo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblBemVindo.setMaximumSize(new java.awt.Dimension(150, 150));
+        lblBemVindo.setMinimumSize(new java.awt.Dimension(150, 150));
+        lblBemVindo.setOpaque(true);
+        lblBemVindo.setPreferredSize(new java.awt.Dimension(150, 150));
+        lblBemVindo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblBemVindoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblBemVindoMouseExited(evt);
+            }
+        });
+        lblBemVindo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lblBemVindoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(lblBemVindo);
+        lblBemVindo.setBounds(535, 68, 220, 80);
 
         jPanel2.setBackground(new java.awt.Color(30, 60, 60));
 
@@ -275,6 +309,18 @@ public class WinDub extends javax.swing.JFrame {
         btMinimizar.setForeground(new Color(204, 204, 204));
     }//GEN-LAST:event_btMinimizarMouseExited
 
+    private void lblBemVindoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBemVindoMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblBemVindoMouseEntered
+
+    private void lblBemVindoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBemVindoMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblBemVindoMouseExited
+
+    private void lblBemVindoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblBemVindoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblBemVindoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -346,5 +392,6 @@ public class WinDub extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton lblBemVindo;
     // End of variables declaration//GEN-END:variables
 }

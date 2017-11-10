@@ -206,7 +206,7 @@
               <Color blue="3c" green="3c" red="1e" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="14" style="1"/>
+              <Font name="Century Gothic" size="12" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -215,7 +215,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/moverArquivo.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Mover Arquivo"/>
+            <Property name="text" type="java.lang.String" value="Mover Arquivo"/>
+            <Property name="toolTipText" type="java.lang.String" value="Move o arquivo selecionado para outro diret&#xf3;rio interno"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Cursor em Forma de M&#xe3;o"/>
             </Property>
@@ -230,6 +231,7 @@
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[103, 103]"/>
             </Property>
+            <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btMoverArquivoMouseEntered"/>
@@ -247,7 +249,7 @@
               <Color blue="3c" green="3c" red="1e" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="14" style="1"/>
+              <Font name="Century Gothic" size="12" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -256,7 +258,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/inserirArquivo.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Inserir Arquivo"/>
+            <Property name="text" type="java.lang.String" value="Inserir Arquivo"/>
+            <Property name="toolTipText" type="java.lang.String" value="Insere novo arquivo ao arquivo .dub"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Cursor em Forma de M&#xe3;o"/>
             </Property>
@@ -271,6 +274,7 @@
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[103, 103]"/>
             </Property>
+            <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btInserirArquivoMouseEntered"/>
@@ -288,7 +292,7 @@
               <Color blue="3c" green="3c" red="1e" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="14" style="1"/>
+              <Font name="Century Gothic" size="12" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -297,7 +301,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/criarDiretorio.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Criar Diret&#xf3;rio"/>
+            <Property name="text" type="java.lang.String" value="Criar Diret&#xf3;rio"/>
+            <Property name="toolTipText" type="java.lang.String" value="Cria novo diret&#xf3;rio dentro do arquivo .dub"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Cursor em Forma de M&#xe3;o"/>
             </Property>
@@ -312,6 +317,7 @@
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[103, 103]"/>
             </Property>
+            <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btCriarDiretorioMouseEntered"/>
@@ -329,7 +335,7 @@
               <Color blue="3c" green="3c" red="1e" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="14" style="1"/>
+              <Font name="Century Gothic" size="12" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -338,7 +344,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/extrairArquivo.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Extrair Arquivo"/>
+            <Property name="text" type="java.lang.String" value="Extrair Arquivo"/>
+            <Property name="toolTipText" type="java.lang.String" value="Extrai arquivos para o Sistema"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Cursor em Forma de M&#xe3;o"/>
             </Property>
@@ -353,6 +360,7 @@
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[103, 103]"/>
             </Property>
+            <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btExtrairArquivoMouseEntered"/>
@@ -370,7 +378,7 @@
               <Color blue="3c" green="3c" red="1e" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Century Gothic" size="14" style="1"/>
+              <Font name="Century Gothic" size="12" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -379,7 +387,8 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/exibirConteudo.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Exibir Conte&#xfa;do (.txt)"/>
+            <Property name="text" type="java.lang.String" value="Exibir Conte&#xfa;do"/>
+            <Property name="toolTipText" type="java.lang.String" value="Abre qrquivos com extens&#xe3;o .txt"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Cursor em Forma de M&#xe3;o"/>
             </Property>
@@ -394,6 +403,7 @@
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[103, 103]"/>
             </Property>
+            <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btExibirConteudoMouseEntered"/>

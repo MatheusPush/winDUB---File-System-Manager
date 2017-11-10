@@ -155,17 +155,19 @@ public class App extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         btMoverArquivo.setBackground(new java.awt.Color(30, 60, 60));
-        btMoverArquivo.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btMoverArquivo.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btMoverArquivo.setForeground(new java.awt.Color(255, 255, 255));
         btMoverArquivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btMoverArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/moverArquivo.png"))); // NOI18N
-        btMoverArquivo.setToolTipText("Mover Arquivo");
+        btMoverArquivo.setText("Mover Arquivo");
+        btMoverArquivo.setToolTipText("Move o arquivo selecionado para outro diretório interno");
         btMoverArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btMoverArquivo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btMoverArquivo.setMaximumSize(new java.awt.Dimension(103, 103));
         btMoverArquivo.setMinimumSize(new java.awt.Dimension(103, 103));
         btMoverArquivo.setOpaque(true);
         btMoverArquivo.setPreferredSize(new java.awt.Dimension(103, 103));
+        btMoverArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btMoverArquivo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btMoverArquivoMouseEntered(evt);
@@ -178,17 +180,19 @@ public class App extends javax.swing.JFrame {
         btMoverArquivo.setBounds(0, 206, 103, 103);
 
         btInserirArquivo.setBackground(new java.awt.Color(30, 60, 60));
-        btInserirArquivo.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btInserirArquivo.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btInserirArquivo.setForeground(new java.awt.Color(255, 255, 255));
         btInserirArquivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btInserirArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/inserirArquivo.png"))); // NOI18N
-        btInserirArquivo.setToolTipText("Inserir Arquivo");
+        btInserirArquivo.setText("Inserir Arquivo");
+        btInserirArquivo.setToolTipText("Insere novo arquivo ao arquivo .dub");
         btInserirArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btInserirArquivo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btInserirArquivo.setMaximumSize(new java.awt.Dimension(103, 103));
         btInserirArquivo.setMinimumSize(new java.awt.Dimension(103, 103));
         btInserirArquivo.setOpaque(true);
         btInserirArquivo.setPreferredSize(new java.awt.Dimension(103, 103));
+        btInserirArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btInserirArquivo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btInserirArquivoMouseEntered(evt);
@@ -201,17 +205,19 @@ public class App extends javax.swing.JFrame {
         btInserirArquivo.setBounds(0, 103, 103, 103);
 
         btCriarDiretorio.setBackground(new java.awt.Color(30, 60, 60));
-        btCriarDiretorio.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btCriarDiretorio.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btCriarDiretorio.setForeground(new java.awt.Color(255, 255, 255));
         btCriarDiretorio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btCriarDiretorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/criarDiretorio.png"))); // NOI18N
-        btCriarDiretorio.setToolTipText("Criar Diretório");
+        btCriarDiretorio.setText("Criar Diretório");
+        btCriarDiretorio.setToolTipText("Cria novo diretório dentro do arquivo .dub");
         btCriarDiretorio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btCriarDiretorio.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btCriarDiretorio.setMaximumSize(new java.awt.Dimension(103, 103));
         btCriarDiretorio.setMinimumSize(new java.awt.Dimension(103, 103));
         btCriarDiretorio.setOpaque(true);
         btCriarDiretorio.setPreferredSize(new java.awt.Dimension(103, 103));
+        btCriarDiretorio.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btCriarDiretorio.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btCriarDiretorioMouseEntered(evt);
@@ -224,17 +230,19 @@ public class App extends javax.swing.JFrame {
         btCriarDiretorio.setBounds(0, 0, 103, 103);
 
         btExtrairArquivo.setBackground(new java.awt.Color(30, 60, 60));
-        btExtrairArquivo.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btExtrairArquivo.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btExtrairArquivo.setForeground(new java.awt.Color(255, 255, 255));
         btExtrairArquivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btExtrairArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/extrairArquivo.png"))); // NOI18N
-        btExtrairArquivo.setToolTipText("Extrair Arquivo");
+        btExtrairArquivo.setText("Extrair Arquivo");
+        btExtrairArquivo.setToolTipText("Extrai arquivos para o Sistema");
         btExtrairArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btExtrairArquivo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btExtrairArquivo.setMaximumSize(new java.awt.Dimension(103, 103));
         btExtrairArquivo.setMinimumSize(new java.awt.Dimension(103, 103));
         btExtrairArquivo.setOpaque(true);
         btExtrairArquivo.setPreferredSize(new java.awt.Dimension(103, 103));
+        btExtrairArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btExtrairArquivo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btExtrairArquivoMouseEntered(evt);
@@ -247,17 +255,19 @@ public class App extends javax.swing.JFrame {
         btExtrairArquivo.setBounds(0, 309, 103, 103);
 
         btExibirConteudo.setBackground(new java.awt.Color(30, 60, 60));
-        btExibirConteudo.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btExibirConteudo.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         btExibirConteudo.setForeground(new java.awt.Color(255, 255, 255));
         btExibirConteudo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btExibirConteudo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/exibirConteudo.png"))); // NOI18N
-        btExibirConteudo.setToolTipText("Exibir Conteúdo (.txt)");
+        btExibirConteudo.setText("Exibir Conteúdo");
+        btExibirConteudo.setToolTipText("Abre qrquivos com extensão .txt");
         btExibirConteudo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btExibirConteudo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btExibirConteudo.setMaximumSize(new java.awt.Dimension(103, 103));
         btExibirConteudo.setMinimumSize(new java.awt.Dimension(103, 103));
         btExibirConteudo.setOpaque(true);
         btExibirConteudo.setPreferredSize(new java.awt.Dimension(103, 103));
+        btExibirConteudo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btExibirConteudo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btExibirConteudoMouseEntered(evt);

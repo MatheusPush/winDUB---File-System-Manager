@@ -386,7 +386,7 @@ public class App extends javax.swing.JFrame {
         // TODO add your handling code here:
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
-        this.setLocation(x - xMouse, y - yMouse);
+        this.setLocation(x - xMouse - 103, y - yMouse);
     }//GEN-LAST:event_frameDragMouseDragged
 
     private void btCriarDiretorioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCriarDiretorioMouseEntered

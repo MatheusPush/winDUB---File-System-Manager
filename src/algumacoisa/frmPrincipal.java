@@ -1,4 +1,4 @@
-package winpiva;
+package algumacoisa;
 
 import java.awt.Component;
 
@@ -78,7 +78,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 24, -1, -1));
 
-        btnCriarArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mais2.png"))); // NOI18N
         btnCriarArquivo.setText("Criar Arquivo .piva");
         btnCriarArquivo.setToolTipText("");
         btnCriarArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -91,7 +90,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         getContentPane().add(btnCriarArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 200, 40));
 
-        btnSeleionarArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/importar2.png"))); // NOI18N
         btnSeleionarArquivo.setText("Importar Arquivo .piva");
         btnSeleionarArquivo.setToolTipText("Importar arquivo existente");
         btnSeleionarArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -104,7 +102,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         getContentPane().add(btnSeleionarArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 200, 40));
 
-        btnExcluitArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/remover2.png"))); // NOI18N
         btnExcluitArquivo.setText("Excluir");
         btnExcluitArquivo.setToolTipText("Remover arquivo ou pasta");
         btnExcluitArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -117,7 +114,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         getContentPane().add(btnExcluitArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 160, 195, 40));
 
-        btnCopiarArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/copiar2.png"))); // NOI18N
         btnCopiarArquivo.setText("Copiar Arquivo");
         btnCopiarArquivo.setToolTipText("Copiar arquivo para o computador");
         btnCopiarArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -140,7 +136,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         lblArquivo.setText("Dados do arquivo selecionado");
         getContentPane().add(lblArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
-        btnVisualizarArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lupa2.png"))); // NOI18N
         btnVisualizarArquivo.setText("Visualizar Texto (.txt)");
         btnVisualizarArquivo.setToolTipText("Abrir conteúdo de arquivo .txt");
         btnVisualizarArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -153,7 +148,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         getContentPane().add(btnVisualizarArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 195, 40));
 
-        btnCriarPasta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/addPasta2.png"))); // NOI18N
         btnCriarPasta.setText("Criar Pasta");
         btnCriarPasta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnCriarPasta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -175,7 +169,6 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 450, 240));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/add2.png"))); // NOI18N
         jButton2.setText("Inserir Arquivo");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -188,7 +181,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 10, 195, 40));
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 0, 10, 360));
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/alterarPasta2.png"))); // NOI18N
         jButton3.setText("Mover de Pasta");
         jButton3.setToolTipText("Alterar a pasta do arquivo");
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -201,7 +193,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 310, 195, 40));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mover2.png"))); // NOI18N
         jButton1.setText("Mover Arquivo");
         jButton1.setToolTipText("Mover o arquivo selecionado para o computador");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));

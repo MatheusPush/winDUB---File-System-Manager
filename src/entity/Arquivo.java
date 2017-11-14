@@ -19,23 +19,19 @@ public class Arquivo {
     private int inicio;
     private int fim;
     private String criacao;
-    private String modificacao;
     private String dir;
-    private boolean isDir;
     
     public Arquivo (String header) {
         
         String [] h = header.split("|");
         
-        nome = h[0];
-        tipo = Integer.parseInt(h[1]);
+        tipo = Integer.parseInt(h[0]); // #0 = META, #1 = ARQUIVO, #2 = DIR
+        nome = h[1];
         path = h[2];
         inicio = Integer.parseInt(h[3]);
         fim = Integer.parseInt(h[4]);
         criacao = h[5];
-        modificacao = h[6];
-        dir = h[7];
-        isDir = Boolean.parseBoolean(h[8]);
+        dir = h[6];
         
     }
 
@@ -87,28 +83,12 @@ public class Arquivo {
         this.criacao = criacao;
     }
 
-    public String getModificacao() {
-        return modificacao;
-    }
-
-    public void setModificacao(String modificacao) {
-        this.modificacao = modificacao;
-    }
-
     public String getDir() {
         return dir;
     }
 
     public void setDir(String dir) {
         this.dir = dir;
-    }
-
-    public boolean isIsDir() {
-        return isDir;
-    }
-
-    public void setIsDir(boolean isDir) {
-        this.isDir = isDir;
     }
     
 }

@@ -1,4 +1,4 @@
-package winpiva;
+package algumacoisa;
 
 /**
  *

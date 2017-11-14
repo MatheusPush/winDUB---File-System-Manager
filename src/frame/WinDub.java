@@ -5,15 +5,21 @@
  */
 package frame;
 
+import entity.Arquivo;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -292,66 +298,52 @@ public class WinDub extends javax.swing.JFrame {
             String nome = novoArquivo.getName();
             String caminho = novoArquivo.getAbsolutePath();
             
-            /* Cabeçalho
-            
-            FileWriter arq;
-            
             try {
                 
-                arq = new FileWriter(caminho + ".txt");
-                PrintWriter gravarDados = new PrintWriter(arq);
-                gravarDados.println("0");
+                BufferedOutputStream dub = new BufferedOutputStream(new FileOutputStream(novoArquivo + ".dub"));
                 
-                // HASH
-                gravarDados.println(getCodigoVerificador(caminho));
-
-                arq.close();
+                SimpleDateFormat fmt = new SimpleDateFormat("ddMMyyyyHHmmss");
                 
-            } catch (IOException ex) {
-                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            */
-            
-            DataOutputStream outStream = null;
-            
-            try {
+                String cabecalhoInicial = "#0|" + nome + "|" + caminho + "|00000000|00000000|" + fmt.format(new Date()) + "|Metadado"
+                        + "#2|Root|Root|00000000|00000000|" + fmt.format(new Date()) + "|Root";
                 
-                outStream = new DataOutputStream(new FileOutputStream(caminho + ".dub"));
-                outStream.close();
+                dub.write(cabecalhoInicial.getBytes());
+                dub.flush();
+                
+                dub.close();
                 
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-            
-        }
-        
-        this.setVisible(false);
-        App app = new App();
-        app.setOpacity(0f);
-        app.setVisible(true);
-        
-        SwingWorker w = new SwingWorker() {
-        @Override
-        protected Object doInBackground() throws Exception {
-            for(int i = 1; i <= 50; i++) {
-            app.setOpacity(i * 0.02f);
-            try {
-                    Thread.sleep(20);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
             
-            return 0;
+            this.setVisible(false);
+            App app = new App();
+            app.setOpacity(0f);
+            app.setVisible(true);
+
+            SwingWorker w = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                for(int i = 1; i <= 50; i++) {
+                app.setOpacity(i * 0.02f);
+                try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                return 0;
+
+            }
+
+            };
+
+            w.execute();
             
         }
-        
-        };
-        
-        w.execute();
         
     }//GEN-LAST:event_btNovoActionPerformed
 
@@ -427,7 +419,7 @@ public class WinDub extends javax.swing.JFrame {
                     for(int i = 1; i <= 50; i++) {
                     wd.setOpacity(i * 0.02f);
                     try {
-                            Thread.sleep(20);
+                            Thread.sleep(10);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -455,4 +447,5 @@ public class WinDub extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton lblBemVindo;
     // End of variables declaration//GEN-END:variables
+
 }

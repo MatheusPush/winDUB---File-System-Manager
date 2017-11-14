@@ -1,8 +1,8 @@
-package winpiva;
+package algumacoisa;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import winpiva.Winpiva;
+import algumacoisa.Winpiva;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**

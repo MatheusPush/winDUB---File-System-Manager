@@ -15,7 +15,7 @@
  * 24/11/2015
  */
 
-package winpiva;
+package algumacoisa;
 
 public class Winpiva {
     

@@ -5,8 +5,10 @@
  */
 package frame;
 
+import entity.Arquivo;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.util.List;
 
 /**
  *
@@ -15,6 +17,9 @@ import java.awt.Cursor;
 public class App extends javax.swing.JFrame {
     
     int xMouse, yMouse;
+    
+    public static String filename = "";
+    public static List<Arquivo> arquivos;
 
     /**
      * Creates new form App
@@ -54,6 +59,7 @@ public class App extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("winDUB");
         setMaximumSize(new java.awt.Dimension(860, 515));
         setMinimumSize(new java.awt.Dimension(860, 515));
         setUndecorated(true);

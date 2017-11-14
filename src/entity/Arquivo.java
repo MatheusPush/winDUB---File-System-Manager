@@ -21,6 +21,7 @@ public class Arquivo {
     private String criacao;
     private String modificacao;
     private String dir;
+    private boolean isDir;
     
     public Arquivo (String header) {
         
@@ -34,6 +35,7 @@ public class Arquivo {
         criacao = h[5];
         modificacao = h[6];
         dir = h[7];
+        isDir = Boolean.parseBoolean(h[8]);
         
     }
 
@@ -100,7 +102,13 @@ public class Arquivo {
     public void setDir(String dir) {
         this.dir = dir;
     }
-    
-    
+
+    public boolean isIsDir() {
+        return isDir;
+    }
+
+    public void setIsDir(boolean isDir) {
+        this.isDir = isDir;
+    }
     
 }

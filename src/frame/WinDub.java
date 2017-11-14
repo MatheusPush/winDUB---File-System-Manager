@@ -7,11 +7,21 @@ package frame;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.w3c.dom.css.RGBColor;
 
 /**
@@ -267,6 +277,57 @@ public class WinDub extends javax.swing.JFrame {
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
         // TODO add your handling code here:
+
+        JFileChooser fileChooser = new JFileChooser();
+        
+        fileChooser.setDialogTitle("Selecione o local do Arquivo");
+        
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Arquivos Dub (.dub)", "dub"));
+        
+        if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
+            
+            File novoArquivo = fileChooser.getSelectedFile();
+            
+            String nome = novoArquivo.getName();
+            String caminho = novoArquivo.getAbsolutePath();
+            
+            /* Cabeçalho
+            
+            FileWriter arq;
+            
+            try {
+                
+                arq = new FileWriter(caminho + ".txt");
+                PrintWriter gravarDados = new PrintWriter(arq);
+                gravarDados.println("0");
+                
+                // HASH
+                gravarDados.println(getCodigoVerificador(caminho));
+
+                arq.close();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            */
+            
+            DataOutputStream outStream = null;
+            
+            try {
+                
+                outStream = new DataOutputStream(new FileOutputStream(caminho + ".dub"));
+                outStream.close();
+                
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+            
+        }
+        
         this.setVisible(false);
         App app = new App();
         app.setOpacity(0f);

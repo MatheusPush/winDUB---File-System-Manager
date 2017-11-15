@@ -5,12 +5,16 @@
  */
 package frame;
 
+import static algumacoisa.frmPrincipal.nomePiva;
 import entity.Arquivo;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -25,6 +29,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -137,6 +142,11 @@ public class WinDub extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btAbrirMouseExited(evt);
+            }
+        });
+        btAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAbrirActionPerformed(evt);
             }
         });
         getContentPane().add(btAbrir);
@@ -373,6 +383,75 @@ public class WinDub extends javax.swing.JFrame {
     private void lblBemVindoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblBemVindoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_lblBemVindoActionPerformed
+
+    private void btAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAbrirActionPerformed
+        // TODO add your handling code here:
+        
+        JFileChooser fileChooser = new JFileChooser();
+        
+        fileChooser.setDialogTitle("Selecione o local do Arquivo");
+        
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Arquivos Dub (.dub)", "dub"));
+
+        if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
+            
+            //if (verificarCodidoVerificador(filec.getSelectedFile().getAbsolutePath().replace(".piva", ""))) {
+
+            try {
+                
+                //montarArquivos(lblCaminhoArquivo.getText().replace(".piva", ""), nomePiva);
+                
+                BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
+                
+                byte [] array = Files.readAllBytes(fileChooser.getSelectedFile().toPath());
+
+                Arquivo metadado = new Arquivo(array.toString().split("#")[0]);
+                    
+                
+                
+                
+                
+                this.setVisible(false);
+                App app = new App();
+                app.setOpacity(0f);
+                app.getNomeArquivo().setText("(" + fileChooser.getSelectedFile().getName() + ")");
+                app.getConteudoArquivo().setText("Tamanho do arquivo: " + (metadado.getFim() - metadado.getInicio()) + "bytes");
+                app.setVisible(true);
+
+                SwingWorker w = new SwingWorker() {
+                @Override
+                protected Object doInBackground() throws Exception {
+                    for(int i = 1; i <= 50; i++) {
+                    app.setOpacity(i * 0.02f);
+                    try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                    return 0;
+
+                }
+
+                };
+
+                w.execute();
+                
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                    Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+            /*} else {
+                JOptionPane.showMessageDialog(null, "Erro: Não é possível importar o arquivo selecionado "
+                        + "pois ele teve seu código alterado.");
+            }*/
+        }
+        
+    }//GEN-LAST:event_btAbrirActionPerformed
 
     /**
      * @param args the command line arguments

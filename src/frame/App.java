@@ -9,6 +9,7 @@ import entity.Arquivo;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.util.List;
+import javax.swing.JLabel;
 
 /**
  *
@@ -41,7 +42,7 @@ public class App extends javax.swing.JFrame {
         btClose = new javax.swing.JLabel();
         btMinimizar = new javax.swing.JLabel();
         frameDrag = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        nomeArquivo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -51,7 +52,7 @@ public class App extends javax.swing.JFrame {
         btExtrairArquivo = new javax.swing.JLabel();
         btExibirConteudo = new javax.swing.JLabel();
         frameDrag1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        conteudoArquivo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
@@ -133,11 +134,11 @@ public class App extends javax.swing.JFrame {
         top.add(frameDrag);
         frameDrag.setBounds(0, 0, 757, 30);
 
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("[NomeArquivo.dub]");
-        top.add(jLabel3);
-        jLabel3.setBounds(80, 0, 628, 26);
+        nomeArquivo.setFont(new java.awt.Font("Berlin Sans FB", 0, 20)); // NOI18N
+        nomeArquivo.setForeground(new java.awt.Color(255, 255, 255));
+        nomeArquivo.setText("[NomeArquivo.dub]");
+        top.add(nomeArquivo);
+        nomeArquivo.setBounds(80, 0, 628, 26);
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -296,11 +297,11 @@ public class App extends javax.swing.JFrame {
         frameDrag1.setPreferredSize(new java.awt.Dimension(860, 30));
         frameDrag1.setLayout(null);
 
-        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 20)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Conteúdo do Arquivo [Tamanho]");
-        frameDrag1.add(jLabel4);
-        jLabel4.setBounds(8, 0, 740, 26);
+        conteudoArquivo.setFont(new java.awt.Font("Berlin Sans FB", 0, 20)); // NOI18N
+        conteudoArquivo.setForeground(new java.awt.Color(255, 255, 255));
+        conteudoArquivo.setText("Conteúdo do Arquivo [Tamanho]");
+        frameDrag1.add(conteudoArquivo);
+        conteudoArquivo.setBounds(8, 0, 740, 26);
 
         getContentPane().add(frameDrag1);
         frameDrag1.setBounds(103, 485, 757, 30);
@@ -445,6 +446,22 @@ public class App extends javax.swing.JFrame {
         btExibirConteudo.setBackground(new Color(30, 60, 60));
     }//GEN-LAST:event_btExibirConteudoMouseExited
 
+    public JLabel getConteudoArquivo() {
+        return conteudoArquivo;
+    }
+
+    public void setConteudoArquivo(JLabel conteudoArquivo) {
+        this.conteudoArquivo = conteudoArquivo;
+    }
+
+    public JLabel getNomeArquivo() {
+        return nomeArquivo;
+    }
+
+    public void setNomeArquivo(JLabel nomeArquivo) {
+        this.nomeArquivo = nomeArquivo;
+    }
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -455,18 +472,18 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JLabel btInserirArquivo;
     private javax.swing.JLabel btMinimizar;
     private javax.swing.JLabel btMoverArquivo;
+    private javax.swing.JLabel conteudoArquivo;
     private javax.swing.JLabel frameDrag;
     private javax.swing.JPanel frameDrag1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTree jTree1;
+    private javax.swing.JLabel nomeArquivo;
     private javax.swing.JPanel top;
     // End of variables declaration//GEN-END:variables
 }

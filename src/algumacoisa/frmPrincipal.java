@@ -871,7 +871,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             //Lendo arquivo .txt e jogando dentro de um Array
             File arquivoTxt = new File(txt);
             FileInputStream varLerTxt = new FileInputStream(arquivoTxt);
-            BufferedInputStream inTxt = new BufferedInputStream(varLerTxt);
+            BufferedInputStream inTxt = new BufferedInputStream(new FileInputStream(arquivoTxt));
             
             //byte[] array = Files.readAllBytes(arquivoTxt.toPath()); 
             

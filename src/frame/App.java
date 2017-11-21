@@ -9,7 +9,11 @@ import entity.Arquivo;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  *
@@ -55,7 +59,7 @@ public class App extends javax.swing.JFrame {
         conteudoArquivo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        tree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
@@ -134,11 +138,11 @@ public class App extends javax.swing.JFrame {
         top.add(frameDrag);
         frameDrag.setBounds(0, 0, 757, 30);
 
-        nomeArquivo.setFont(new java.awt.Font("Berlin Sans FB", 0, 20)); // NOI18N
+        nomeArquivo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         nomeArquivo.setForeground(new java.awt.Color(255, 255, 255));
         nomeArquivo.setText("[NomeArquivo.dub]");
         top.add(nomeArquivo);
-        nomeArquivo.setBounds(80, 0, 628, 26);
+        nomeArquivo.setBounds(80, 2, 628, 26);
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -201,6 +205,9 @@ public class App extends javax.swing.JFrame {
         btInserirArquivo.setPreferredSize(new java.awt.Dimension(103, 103));
         btInserirArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btInserirArquivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btInserirArquivoMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btInserirArquivoMouseEntered(evt);
             }
@@ -297,24 +304,26 @@ public class App extends javax.swing.JFrame {
         frameDrag1.setPreferredSize(new java.awt.Dimension(860, 30));
         frameDrag1.setLayout(null);
 
-        conteudoArquivo.setFont(new java.awt.Font("Berlin Sans FB", 0, 20)); // NOI18N
+        conteudoArquivo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         conteudoArquivo.setForeground(new java.awt.Color(255, 255, 255));
         conteudoArquivo.setText("Conteúdo do Arquivo [Tamanho]");
         frameDrag1.add(conteudoArquivo);
-        conteudoArquivo.setBounds(8, 0, 740, 26);
+        conteudoArquivo.setBounds(8, 2, 740, 26);
 
         getContentPane().add(frameDrag1);
         frameDrag1.setBounds(103, 485, 757, 30);
 
         jPanel2.setBackground(new java.awt.Color(90, 170, 170));
 
-        jTree1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jTree1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTree1.setRowHeight(20);
-        jScrollPane1.setViewportView(jTree1);
+        tree.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tree.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tree.setRowHeight(20);
+        jScrollPane1.setViewportView(tree);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
+        jTextArea1.setColumns(19);
+        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextArea1.setRows(16);
+        jTextArea1.setText("Nenhum arquivo selecionado.");
         jScrollPane2.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -446,6 +455,38 @@ public class App extends javax.swing.JFrame {
         btExibirConteudo.setBackground(new Color(30, 60, 60));
     }//GEN-LAST:event_btExibirConteudoMouseExited
 
+    private void btInserirArquivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btInserirArquivoMouseClicked
+        
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+
+        String nomePasta = "";
+        
+        if (node == null) {
+            // Inserir em ROOT
+            nomePasta = "root";
+        } else {
+            // Inserir em Node Selecionado
+            if(node.getAllowsChildren()) {
+                // Node == Pasta
+                 nomePasta = (String)node.getUserObject();
+                
+            } else {
+                // Node == Arquivo
+                DefaultMutableTreeNode pasta = (DefaultMutableTreeNode)node.getParent();
+                nomePasta = (String)pasta.getUserObject();
+            }
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        
+        fileChooser.setDialogTitle("Selecione o Arquivo");
+
+        if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
+            
+        }
+        
+    }//GEN-LAST:event_btInserirArquivoMouseClicked
+
     public JLabel getConteudoArquivo() {
         return conteudoArquivo;
     }
@@ -482,8 +523,8 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTree jTree1;
     private javax.swing.JLabel nomeArquivo;
     private javax.swing.JPanel top;
+    private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
 }

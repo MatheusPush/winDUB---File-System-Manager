@@ -870,7 +870,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             
             //Lendo arquivo .txt e jogando dentro de um Array
             File arquivoTxt = new File(txt);
-            FileInputStream varLerTxt = new FileInputStream(arquivoTxt);
+            //FileInputStream varLerTxt = new FileInputStream(arquivoTxt);
             BufferedInputStream inTxt = new BufferedInputStream(new FileInputStream(arquivoTxt));
             
             //byte[] array = Files.readAllBytes(arquivoTxt.toPath()); 
@@ -880,8 +880,8 @@ public class frmPrincipal extends javax.swing.JFrame {
             long inicio = o.getChannel().position(); // Posição atual
 
             //buscar a qt de bit inseridas no arquivo pelo header
-            while ((x = inTxt.read()) != -1) {
-                out.write(x);
+            while (inTxt.read() != -1) {
+                out.write(inTxt.read());
                 out.flush();
             }
 

@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -292,7 +295,6 @@ public class WinDub extends javax.swing.JFrame {
     }//GEN-LAST:event_frameDragMousePressed
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
-        // TODO add your handling code here:
 
         JFileChooser fileChooser = new JFileChooser();
         
@@ -307,18 +309,43 @@ public class WinDub extends javax.swing.JFrame {
             
             String nome = novoArquivo.getName();
             String caminho = novoArquivo.getAbsolutePath();
+            int tamanho = 0;
+            String dataCriacao = "";
             
             try {
                 
-                BufferedOutputStream dub = new BufferedOutputStream(new FileOutputStream(novoArquivo + ".dub"));
+                FileOutputStream dub = new FileOutputStream(novoArquivo + ".dub");
                 
-                SimpleDateFormat fmt = new SimpleDateFormat("ddMMyyyyHHmmss");
+                SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 
-                String cabecalhoInicial = "#0|" + nome + "|" + caminho + "|00000000|00000000|" + fmt.format(new Date()) + "|Metadado"
-                        + "#2|Root|Root|00000000|00000000|" + fmt.format(new Date()) + "|Root";
+                dataCriacao = fmt.format(new Date());
+                
+                String cabecalhoInicial = nome + "|" + caminho + "|00000000|" + dataCriacao;
                 
                 dub.write(cabecalhoInicial.getBytes());
-                dub.flush();
+                
+                tamanho = cabecalhoInicial.getBytes().length + gerarHashArquivo(caminho).getBytes().length;
+                
+                dub.close();
+                
+                // Reescrever com tamanho correto
+                cabecalhoInicial = nome + "|" + caminho + "|" + new DecimalFormat("00000000").format(tamanho) 
+                        + "|" + dataCriacao;
+                
+                dub = new FileOutputStream(novoArquivo + ".dub", false);
+                
+                dub.write(cabecalhoInicial.getBytes());
+                
+                dub.close();
+                
+                // Reescrever com Hash
+                // # = Separador, $ = Final do cabeçalho                
+                String cabecalhoComHash = gerarHashArquivo(caminho) + "#"
+                        + cabecalhoInicial + "$";
+                
+                dub = new FileOutputStream(novoArquivo + ".dub", false);
+                
+                dub.write(cabecalhoComHash.getBytes());
                 
                 dub.close();
                 
@@ -332,6 +359,8 @@ public class WinDub extends javax.swing.JFrame {
             App app = new App();
             app.setOpacity(0f);
             app.setVisible(true);
+            app.getNomeArquivo().setText("(" + nome + ".dub)");
+            app.getConteudoArquivo().setText(tamanho + "bytes (Criado em: " + dataCriacao + ")");
 
             SwingWorker w = new SwingWorker() {
             @Override
@@ -389,47 +418,46 @@ public class WinDub extends javax.swing.JFrame {
         
         JFileChooser fileChooser = new JFileChooser();
         
-        fileChooser.setDialogTitle("Selecione o local do Arquivo");
+        fileChooser.setDialogTitle("Selecione o Arquivo");
         
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Arquivos Dub (.dub)", "dub"));
 
         if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
             
-            //if (verificarCodidoVerificador(filec.getSelectedFile().getAbsolutePath().replace(".piva", ""))) {
+            if (compararHashArquivo(fileChooser.getSelectedFile().getAbsolutePath())) {
 
-            try {
+            //try {
                 
                 //montarArquivos(lblCaminhoArquivo.getText().replace(".piva", ""), nomePiva);
-                
+                /*
                 BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
                 
                 byte [] array = Files.readAllBytes(fileChooser.getSelectedFile().toPath());
 
-                Arquivo metadado = new Arquivo(array.toString().split("#")[0]);
-                    
-                
-                
-                
-                
-                this.setVisible(false);
+                Arquivo metadado = new Arquivo(array.toString().split("#")[0]);                
+                */
                 App app = new App();
-                app.setOpacity(0f);
+                //app.setOpacity(0f);
                 app.getNomeArquivo().setText("(" + fileChooser.getSelectedFile().getName() + ")");
-                app.getConteudoArquivo().setText("Tamanho do arquivo: " + (metadado.getFim() - metadado.getInicio()) + "bytes");
+                //app.getConteudoArquivo().setText("Tamanho do arquivo: " + (metadado.getFim() - metadado.getInicio()) + "bytes");
                 app.setVisible(true);
 
+                this.setAlwaysOnTop(true);
+                
                 SwingWorker w = new SwingWorker() {
                 @Override
                 protected Object doInBackground() throws Exception {
-                    for(int i = 1; i <= 50; i++) {
-                    app.setOpacity(i * 0.02f);
+                    for(int i = 50; i > 0; i--) {
+                    setOpacity(i * 0.02f);
                     try {
-                            Thread.sleep(10);
+                            Thread.sleep(20);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
+                    
+                    setVisible(false);
 
                     return 0;
 
@@ -438,17 +466,17 @@ public class WinDub extends javax.swing.JFrame {
                 };
 
                 w.execute();
-                
+                /*
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                     Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
             
-            /*} else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Erro: Não é possível importar o arquivo selecionado "
                         + "pois ele teve seu código alterado.");
-            }*/
+            }
         }
         
     }//GEN-LAST:event_btAbrirActionPerformed
@@ -485,7 +513,6 @@ public class WinDub extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         
-        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -511,6 +538,7 @@ public class WinDub extends javax.swing.JFrame {
                 };
 
                 w.execute();
+                
             }
         });
     }
@@ -526,5 +554,87 @@ public class WinDub extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton lblBemVindo;
     // End of variables declaration//GEN-END:variables
+
+    private String gerarHashArquivo(String path) {
+            
+        StringBuffer sb = new StringBuffer("");
+        
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            
+            byte [] array = Files.readAllBytes(new File(path + ".dub").toPath());
+            
+            md.update(array, 0, array.length);
+            byte[] hashMd5 = md.digest();
+            for (int i = 0; i < hashMd5.length; i++) {
+                sb.append(Integer.toString((hashMd5[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return sb.toString();
+        
+    }
+    
+    private boolean compararHashArquivo(String path) {
+            
+        StringBuffer sb = new StringBuffer("");
+        
+        String hashArquivo = "";
+        
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            
+            byte [] array = Files.readAllBytes(new File(path).toPath());
+            String conteudo = new String(array);
+            
+            int divisor = conteudo.indexOf("#");
+            
+            hashArquivo = conteudo.substring(0, divisor);
+            String restoArquivo = conteudo.substring(divisor+1).replace("$", "");
+            
+            md.update(restoArquivo.getBytes(), 0, restoArquivo.getBytes().length);
+            byte[] hashMd5 = md.digest();
+            for (int i = 0; i < hashMd5.length; i++) {
+                sb.append(Integer.toString((hashMd5[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if (sb.toString().equals(hashArquivo)) return true;
+        else return false;
+        
+    }
+    
+    /*
+    
+    hash_arquivo
+    #dado_arquivo
+    #meta_pasta1
+    #meta_arquivo1  [00000501|00000499]
+    #meta_arquivo2  [00001001|00001499] x
+    #meta_pasta2
+    #meta_arquivo3$ [00002501|00003499] -> [00001001|00003499]
+    ARQUIVO1 
+    ARQUIVO2 
+    ARQUIVO3 
+
+    Separar
+
+    String dadoArquivo
+    List<String> metadadoArquivo 
+
+    MOVER OU EXTRAIR -> ADD EXLCUIR
+
+    
+    */
 
 }

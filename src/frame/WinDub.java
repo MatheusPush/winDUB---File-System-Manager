@@ -35,7 +35,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
+import javax.swing.event.TreeModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import org.w3c.dom.css.RGBColor;
 
 /**
@@ -309,8 +314,9 @@ public class WinDub extends javax.swing.JFrame {
             
             String nome = novoArquivo.getName();
             String caminho = novoArquivo.getAbsolutePath();
-            int tamanho = 0;
             String dataCriacao = "";
+            String header = "";
+            String headerComHash = "";
             
             try {
                 
@@ -320,32 +326,20 @@ public class WinDub extends javax.swing.JFrame {
                 
                 dataCriacao = fmt.format(new Date());
                 
-                String cabecalhoInicial = nome + "|" + caminho + "|00000000|" + dataCriacao;
+                header = nome + "&&&" + caminho + "&&&" + dataCriacao;
                 
-                dub.write(cabecalhoInicial.getBytes());
-                
-                tamanho = cabecalhoInicial.getBytes().length + gerarHashArquivo(caminho).getBytes().length;
-                
-                dub.close();
-                
-                // Reescrever com tamanho correto
-                cabecalhoInicial = nome + "|" + caminho + "|" + new DecimalFormat("00000000").format(tamanho) 
-                        + "|" + dataCriacao;
-                
-                dub = new FileOutputStream(novoArquivo + ".dub", false);
-                
-                dub.write(cabecalhoInicial.getBytes());
+                dub.write(header.getBytes());
                 
                 dub.close();
                 
                 // Reescrever com Hash
                 // # = Separador, $ = Final do cabeçalho                
-                String cabecalhoComHash = gerarHashArquivo(caminho) + "#"
-                        + cabecalhoInicial + "$";
+                headerComHash = gerarHashArquivo(caminho) + "###"
+                        + header + "$$$";
                 
                 dub = new FileOutputStream(novoArquivo + ".dub", false);
                 
-                dub.write(cabecalhoComHash.getBytes());
+                dub.write(headerComHash.getBytes());
                 
                 dub.close();
                 
@@ -355,24 +349,25 @@ public class WinDub extends javax.swing.JFrame {
                 Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            this.setVisible(false);
-            App app = new App();
-            app.setOpacity(0f);
-            app.setVisible(true);
+            App app = new App(novoArquivo.getPath(), header, headerComHash, dataCriacao);
             app.getNomeArquivo().setText("(" + nome + ".dub)");
-            app.getConteudoArquivo().setText(tamanho + "bytes (Criado em: " + dataCriacao + ")");
+            app.setVisible(true);
+
+            this.setAlwaysOnTop(true);
 
             SwingWorker w = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                for(int i = 1; i <= 50; i++) {
-                app.setOpacity(i * 0.02f);
+                for(int i = 50; i > 0; i--) {
+                setOpacity(i * 0.02f);
                 try {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+
+                setVisible(false);
 
                 return 0;
 
@@ -426,21 +421,21 @@ public class WinDub extends javax.swing.JFrame {
         if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
             
             if (compararHashArquivo(fileChooser.getSelectedFile().getAbsolutePath())) {
-
-            //try {
                 
-                //montarArquivos(lblCaminhoArquivo.getText().replace(".piva", ""), nomePiva);
-                /*
-                BufferedInputStream in = new BufferedInputStream(new FileInputStream(fileChooser.getSelectedFile()));
+                String conteudo = "";
+                try {
+                    conteudo = new String(Files.readAllBytes(fileChooser.getSelectedFile().toPath()));
+                } catch (IOException ex) {
+                    Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
-                byte [] array = Files.readAllBytes(fileChooser.getSelectedFile().toPath());
-
-                Arquivo metadado = new Arquivo(array.toString().split("#")[0]);                
-                */
-                App app = new App();
-                //app.setOpacity(0f);
-                app.getNomeArquivo().setText("(" + fileChooser.getSelectedFile().getName() + ")");
-                //app.getConteudoArquivo().setText("Tamanho do arquivo: " + (metadado.getFim() - metadado.getInicio()) + "bytes");
+                String filename = fileChooser.getSelectedFile().getPath();
+                String header = conteudo.substring(conteudo.indexOf("###")+3).replace("$$$", "");
+                String metadado = header.split("###")[0];
+                String dataCriacao = metadado.split("&&&")[2];
+                
+                App app = new App(filename, header, conteudo, dataCriacao);
+                app.getNomeArquivo().setText("(" + fileChooser.getSelectedFile().getName() + ")");   
                 app.setVisible(true);
 
                 this.setAlwaysOnTop(true);
@@ -592,10 +587,10 @@ public class WinDub extends javax.swing.JFrame {
             byte [] array = Files.readAllBytes(new File(path).toPath());
             String conteudo = new String(array);
             
-            int divisor = conteudo.indexOf("#");
+            int divisor = conteudo.indexOf("###");
             
             hashArquivo = conteudo.substring(0, divisor);
-            String restoArquivo = conteudo.substring(divisor+1).replace("$", "");
+            String restoArquivo = conteudo.substring(divisor+3).replace("$$$", "");
             
             md.update(restoArquivo.getBytes(), 0, restoArquivo.getBytes().length);
             byte[] hashMd5 = md.digest();

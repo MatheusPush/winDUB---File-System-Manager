@@ -6,12 +6,31 @@
 package frame;
 
 import entity.Arquivo;
+import entity.ArquivoTreeModel;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTree;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -24,13 +43,22 @@ public class App extends javax.swing.JFrame {
     int xMouse, yMouse;
     
     public static String filename = "";
+    public static String header = "";
+    public static String headerComHash = "";
+    public static String dataCriacao = "";
     public static List<Arquivo> arquivos;
 
     /**
      * Creates new form App
      */
-    public App() {
+    public App(String filename, String header, String headerComHash, String dataCriacao) {
+        this.filename = filename;
+        this.header = header;
+        this.headerComHash = headerComHash;
+        this.dataCriacao = dataCriacao;
         initComponents();
+        montarArvore();
+        conteudoArquivo.setText(headerComHash.getBytes().length + "bytes (Criado em: " + dataCriacao + ")");
     }
 
     /**
@@ -233,6 +261,9 @@ public class App extends javax.swing.JFrame {
         btCriarDiretorio.setPreferredSize(new java.awt.Dimension(103, 103));
         btCriarDiretorio.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btCriarDiretorio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btCriarDiretorioMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btCriarDiretorioMouseEntered(evt);
             }
@@ -487,6 +518,32 @@ public class App extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btInserirArquivoMouseClicked
 
+    private void btCriarDiretorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCriarDiretorioMouseClicked
+        
+        String nomePasta = "";
+        
+        nomePasta = JOptionPane.showInputDialog("Digite o nome da nova pasta:");
+        
+        if (nomePasta == null) return;
+        
+        if (nomePasta.contains(".")) {
+            JOptionPane.showMessageDialog(null, "Erro: O nome do diretório não pode conter o caractere \".\" (ponto).");
+            return;
+        }
+        
+        if (nomePasta.contains("root")) {
+            JOptionPane.showMessageDialog(null, "Erro: O nome do diretório não pode ser \"root\".");
+            return;
+        }
+        
+        // if existir pasta com mesmo nome no mesmo nivel
+        
+        criarDiretorio(nomePasta);
+        
+        montarArvore();
+        
+    }//GEN-LAST:event_btCriarDiretorioMouseClicked
+
     public JLabel getConteudoArquivo() {
         return conteudoArquivo;
     }
@@ -501,6 +558,10 @@ public class App extends javax.swing.JFrame {
 
     public void setNomeArquivo(JLabel nomeArquivo) {
         this.nomeArquivo = nomeArquivo;
+    }
+
+    public JTree getTree() {
+        return tree;
     }
 
     
@@ -527,4 +588,166 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JPanel top;
     private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
+
+    private void criarDiretorio(String nomePasta) {
+        
+        try {
+                
+                SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                
+                String dataCriacao = fmt.format(new Date());
+                
+                ArquivoTreeModel arvore = ((ArquivoTreeModel)tree.getModel());
+                
+                Arquivo root = new Arquivo();
+                root.setId("0");
+                
+                if(tree.getSelectionPath() != null && tree.getSelectionPath().getLastPathComponent() != null) {
+                    root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
+                }
+                
+                String novoId = "";
+                
+                if(root.getId().equals("0") || root.getAllowsChildren()) {
+                    novoId = root.getId() + "." + (arvore.getChildCount(root) + 1);
+                } else {
+                    novoId = ((Arquivo)root.getParent()).getId() + "." + (arvore.getChildCount(root) + 1);
+                }
+                
+                if(novoId.contains("0")) novoId = novoId.replace("0.", "");
+                
+                header += "###" + nomePasta + "&&&0&&&" + dataCriacao + "&&&" + novoId;
+                
+                FileOutputStream dub = new FileOutputStream(filename);
+                
+                dub.write(header.getBytes());
+                
+                dub.close();
+                
+                // Reescrever com Hash
+                // # = Separador, $ = Final do cabeçalho                
+                headerComHash = gerarHashArquivo(filename) + "###"
+                        + header + "$$$";
+                
+                dub = new FileOutputStream(filename, false);
+                
+                dub.write(headerComHash.getBytes());
+                
+                dub.close();
+                
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+            }        
+        
+    }
+    
+    private String gerarHashArquivo(String path) {
+            
+        StringBuffer sb = new StringBuffer("");
+        
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            
+            byte [] array = Files.readAllBytes(new File(path).toPath());
+            
+            md.update(array, 0, array.length);
+            byte[] hashMd5 = md.digest();
+            for (int i = 0; i < hashMd5.length; i++) {
+                sb.append(Integer.toString((hashMd5[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return sb.toString();
+        
+    }
+
+    private void montarArvore() {
+        
+        // Ler header
+        List<String> list = Arrays.asList(header.split("###"));
+        
+        list = new ArrayList<String>(list);
+        
+        List<Arquivo> arquivos = new ArrayList<Arquivo>();
+        
+        list.remove(0); // Remover metadados do .dub
+        
+        for(String s : list) {
+            String [] arquivoPart = s.split("&&&");
+            
+            if(Integer.parseInt(arquivoPart[1]) == 0) {
+            
+                // Diretorio
+                Arquivo a = new Arquivo();
+                a.setNome(arquivoPart[0]);
+                a.setTipo(Integer.parseInt(arquivoPart[1]));
+                a.setCriacao(arquivoPart[2]);
+                a.setId(arquivoPart[3]);
+                a.setIdInterno(a.getId());
+                
+                arquivos.add(a);
+                
+            } else {
+            
+                // Arquivo
+                Arquivo a = new Arquivo();
+                a.setNome(arquivoPart[0]);
+                a.setTipo(Integer.parseInt(arquivoPart[1]));
+                a.setPath(arquivoPart[2]);
+                a.setInicio(Integer.parseInt(arquivoPart[3]));
+                a.setTamanho(Integer.parseInt(arquivoPart[4]));
+                a.setCriacao(arquivoPart[5]);
+                a.setId(arquivoPart[6]);
+                a.setIdInterno(a.getId());
+                
+                arquivos.add(a);
+                
+            }
+            
+        }
+            
+        CompArquivos ca = new CompArquivos();
+
+        Collections.sort(arquivos, ca);
+        
+        System.out.println("Lista Ordenada");
+        
+        listaEncadeada(arquivos);
+        
+        System.out.println("Lista Encadeada");
+        
+        ArquivoTreeModel arvore = new ArquivoTreeModel(arquivos);
+        
+        tree.setModel(arvore);
+        
+    }
+
+    private void listaEncadeada(List<Arquivo> arquivos) {
+        Arquivo pai = new Arquivo();
+        for(int i = 0; i < arquivos.size(); i++) {
+            if(!arquivos.get(i).getArquivos().isEmpty()) listaEncadeada(arquivos.get(i).getArquivos());
+            if(arquivos.get(i).getIdInterno().contains(".")) {
+                Arquivo filho = arquivos.remove(i);
+                filho.setIdInterno(filho.getIdInterno().substring(filho.getId().indexOf(".")+1));
+                pai.getArquivos().add(filho);
+                i = -1;
+            } else {
+                pai = arquivos.get(i);
+            }
+        }
+    }
+    
+    public class CompArquivos implements Comparator<Arquivo> {
+        public int compare(Arquivo a1, Arquivo a2) {
+            return a1.getId().compareTo(a2.getId());
+    }
+}
+    
 }

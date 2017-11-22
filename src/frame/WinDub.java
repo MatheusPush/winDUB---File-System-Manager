@@ -349,7 +349,7 @@ public class WinDub extends javax.swing.JFrame {
                 Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            App app = new App(novoArquivo.getPath(), header, headerComHash, dataCriacao);
+            App app = new App(novoArquivo.getPath() + ".dub", header, headerComHash, dataCriacao);
             app.getNomeArquivo().setText("(" + nome + ".dub)");
             app.setVisible(true);
 

@@ -19,29 +19,18 @@ public class Arquivo implements TreeNode{
     
     private String id;
     private String idInterno;
-    private String nome;
-    private int tipo;
+    private String nome;    
+    private String criacao;
+    private int tipo; // 0 -> Diretorio // 1 -> Arquivo
+    
+    // Apenas para arquivos
     private String path;
     private int inicio;
     private int tamanho;
-    private String criacao;
-    private List<Arquivo> arquivos = new ArrayList<Arquivo>(); // Apenas para diretorios    
     
-    /*
+    // Apenas para diretorios  
     
-    public Arquivo (String header) {
-        
-        String [] h = header.split("|");
-        
-        tipo = Integer.parseInt(h[0]); // #0 = META, #1 = ARQUIVO, #2 = DIR
-        nome = h[1];
-        path = h[2];
-        inicio = Integer.parseInt(h[3]);
-        fim = Integer.parseInt(h[4]);
-        criacao = h[5];
-        dir = h[6];
-        
-    }*/
+    private List<Arquivo> arquivos = new ArrayList<Arquivo>(); 
     
     @Override
     public String toString(){

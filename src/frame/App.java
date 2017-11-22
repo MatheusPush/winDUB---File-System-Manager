@@ -89,7 +89,7 @@ public class App extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        metadados = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("winDUB");
@@ -349,13 +349,19 @@ public class App extends javax.swing.JFrame {
         tree.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tree.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tree.setRowHeight(20);
+        tree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treeMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tree);
 
-        jTextArea1.setColumns(19);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextArea1.setRows(16);
-        jTextArea1.setText("Nenhum arquivo selecionado.");
-        jScrollPane2.setViewportView(jTextArea1);
+        metadados.setColumns(19);
+        metadados.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        metadados.setRows(16);
+        metadados.setText("Nenhum arquivo selecionado.");
+        metadados.setEnabled(false);
+        jScrollPane2.setViewportView(metadados);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -487,27 +493,7 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btExibirConteudoMouseExited
 
     private void btInserirArquivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btInserirArquivoMouseClicked
-        
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-
-        String nomePasta = "";
-        
-        if (node == null) {
-            // Inserir em ROOT
-            nomePasta = "root";
-        } else {
-            // Inserir em Node Selecionado
-            if(node.getAllowsChildren()) {
-                // Node == Pasta
-                 nomePasta = (String)node.getUserObject();
                 
-            } else {
-                // Node == Arquivo
-                DefaultMutableTreeNode pasta = (DefaultMutableTreeNode)node.getParent();
-                nomePasta = (String)pasta.getUserObject();
-            }
-        }
-        
         JFileChooser fileChooser = new JFileChooser();
         
         fileChooser.setDialogTitle("Selecione o Arquivo");
@@ -543,6 +529,19 @@ public class App extends javax.swing.JFrame {
         montarArvore();
         
     }//GEN-LAST:event_btCriarDiretorioMouseClicked
+
+    private void treeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeMouseClicked
+        
+        Arquivo root = new Arquivo();
+        root.setId("-");
+
+        if(tree.getSelectionPath() != null && tree.getSelectionPath().getLastPathComponent() != null) {
+            root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
+        }
+        
+        if(root.getId().equals("0")) metadados.setText("Conteúdo do Diretório:\n\n Dir. Raiz");
+        
+    }//GEN-LAST:event_treeMouseClicked
 
     public JLabel getConteudoArquivo() {
         return conteudoArquivo;
@@ -583,7 +582,7 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea metadados;
     private javax.swing.JLabel nomeArquivo;
     private javax.swing.JPanel top;
     private javax.swing.JTree tree;

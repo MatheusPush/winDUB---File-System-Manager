@@ -522,6 +522,9 @@
                 </Property>
                 <Property name="rowHeight" type="int" value="20"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="treeMouseClicked"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="App_jTree1"/>
               </AuxValues>
@@ -535,7 +538,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextArea" name="metadados">
               <Properties>
                 <Property name="columns" type="int" value="19"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -543,6 +546,7 @@
                 </Property>
                 <Property name="rows" type="int" value="16"/>
                 <Property name="text" type="java.lang.String" value="Nenhum arquivo selecionado."/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>

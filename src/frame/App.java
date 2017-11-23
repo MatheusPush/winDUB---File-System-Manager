@@ -371,9 +371,9 @@ public class App extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -529,6 +529,22 @@ public class App extends javax.swing.JFrame {
         
         if (nomePasta.contains("root")) {
             JOptionPane.showMessageDialog(null, "Erro: O nome do diretório não pode ser \"root\".");
+            return;
+        }
+        
+        if(nomePasta.contains("!") || nomePasta.contains("@") || nomePasta.contains("#") || nomePasta.contains("$") ||
+           nomePasta.contains("$") || nomePasta.contains("%") || nomePasta.contains("¨") || nomePasta.contains("&") ||
+           nomePasta.contains("*") || nomePasta.contains("(") || nomePasta.contains(")") || nomePasta.contains("-") ||
+           nomePasta.contains("_") || nomePasta.contains("+") || nomePasta.contains("=") || nomePasta.contains("§") ||
+           nomePasta.contains("{") || nomePasta.contains("}") || nomePasta.contains("[") || nomePasta.contains("ª") ||
+           nomePasta.contains("]") || nomePasta.contains("º") || nomePasta.contains(":") || nomePasta.contains(";") ||
+           nomePasta.contains("?") || nomePasta.contains("/") || nomePasta.contains("~") || nomePasta.contains("^") ||
+           nomePasta.contains("`") || nomePasta.contains("´") || nomePasta.contains("\\")|| nomePasta.contains("\"")||
+           nomePasta.contains("\'")|| nomePasta.contains("¹") || nomePasta.contains("²") || nomePasta.contains("³") ||
+           nomePasta.contains("£") || nomePasta.contains("¢") || nomePasta.contains("|") || nomePasta.contains("¬") ||
+           nomePasta.contains(",")){
+
+            JOptionPane.showMessageDialog(null, "Erro: O nome do diretório não pode conter caracteres especiais.");
             return;
         }
         

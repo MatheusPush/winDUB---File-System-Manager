@@ -56,8 +56,10 @@ public class ArquivoTreeModel implements TreeModel {
     }
 
     @Override
-    public boolean isLeaf(Object node) {
-        return arquivos.isEmpty();
+    public boolean isLeaf(Object node) {        
+        if (((Arquivo)node).getId().equals("0")) return false;
+        
+        return ((Arquivo)node).getTipo() == 1;
     }
 
     @Override
@@ -82,6 +84,14 @@ public class ArquivoTreeModel implements TreeModel {
     @Override
     public void removeTreeModelListener(TreeModelListener l) {
         listeners.remove(l);
+    }
+
+    public List<Arquivo> getArquivos() {
+        return arquivos;
+    }
+
+    public void setArquivos(List<Arquivo> arquivos) {
+        this.arquivos = arquivos;
     }
     
 }

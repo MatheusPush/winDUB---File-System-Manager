@@ -17,11 +17,14 @@ import javax.swing.tree.TreeNode;
  */
 public class Arquivo implements TreeNode{
     
-    private String id;
-    private String idInterno;
-    private String nome;    
+    private String nome;   
+    private int tipo; // 0 -> Diretorio // 1 -> Arquivo 
     private String criacao;
-    private int tipo; // 0 -> Diretorio // 1 -> Arquivo
+    private String id;
+    
+    // Dados para navegação na árvore
+    private String idInterno;
+    private Arquivo pai;
     
     // Apenas para arquivos
     private String path;
@@ -105,7 +108,7 @@ public class Arquivo implements TreeNode{
 
     @Override
     public TreeNode getParent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pai;
     }
 
     @Override
@@ -115,13 +118,12 @@ public class Arquivo implements TreeNode{
 
     @Override
     public boolean getAllowsChildren() {
-        if(tipo == 0) return true;
-        return false;
+        return tipo == 0;
     }
 
     @Override
     public boolean isLeaf() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return tipo == 1;
     }
 
     @Override
@@ -144,5 +146,12 @@ public class Arquivo implements TreeNode{
     public void setIdInterno(String idInterno) {
         this.idInterno = idInterno;
     }
-    
+
+    public Arquivo getPai() {
+        return pai;
+    }
+
+    public void setPai(Arquivo pai) {
+        this.pai = pai;
+    }
 }

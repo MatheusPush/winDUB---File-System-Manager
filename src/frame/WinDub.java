@@ -348,7 +348,7 @@ public class WinDub extends javax.swing.JFrame {
                 Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            App app = new App(novoArquivo.getPath() + ".dub", header, headerComHash, dataCriacao);
+            App app = new App(novoArquivo.getPath() + ".dub", header, headerComHash, dataCriacao, "");
             app.getNomeArquivo().setText("(" + nome + ".dub)");
             app.setVisible(true);
 
@@ -429,11 +429,12 @@ public class WinDub extends javax.swing.JFrame {
                 }
                 
                 String filename = fileChooser.getSelectedFile().getPath();
-                String header = conteudo.substring(conteudo.indexOf("###")+3).replace("$$$", "");
+                String header = conteudo.substring(conteudo.indexOf("###")+3, conteudo.indexOf("$$$"));
+                String conteudoArquivos = conteudo.substring(conteudo.indexOf("$$$")+3);
                 String metadado = header.split("###")[0];
                 String dataCriacao = metadado.split("&&&")[2];
                 
-                App app = new App(filename, header, conteudo, dataCriacao);
+                App app = new App(filename, header, conteudo, dataCriacao, conteudoArquivos);
                 app.getNomeArquivo().setText("(" + fileChooser.getSelectedFile().getName() + ")");   
                 app.setVisible(true);
 
@@ -589,7 +590,7 @@ public class WinDub extends javax.swing.JFrame {
             int divisor = conteudo.indexOf("###");
             
             hashArquivo = conteudo.substring(0, divisor);
-            String restoArquivo = conteudo.substring(divisor+3).replace("$$$", "");
+            String restoArquivo = conteudo.substring(divisor+3);
             
             md.update(restoArquivo.getBytes(), 0, restoArquivo.getBytes().length);
             byte[] hashMd5 = md.digest();
@@ -607,28 +608,5 @@ public class WinDub extends javax.swing.JFrame {
         else return false;
         
     }
-    
-    /*
-    
-    hash_arquivo
-    #dado_arquivo
-    #meta_pasta1
-    #meta_arquivo1  [00000501|00000499]
-    #meta_arquivo2  [00001001|00001499] x
-    #meta_pasta2
-    #meta_arquivo3$ [00002501|00003499] -> [00001001|00003499]
-    ARQUIVO1 
-    ARQUIVO2 
-    ARQUIVO3 
-
-    Separar
-
-    String dadoArquivo
-    List<String> metadadoArquivo 
-
-    MOVER OU EXTRAIR -> ADD EXLCUIR
-
-    
-    */
 
 }

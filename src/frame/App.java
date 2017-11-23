@@ -7,7 +7,6 @@ package frame;
 
 import entity.Arquivo;
 import entity.ArquivoTreeModel;
-import entity.ConteudoArquivo;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.io.File;
@@ -45,22 +44,23 @@ public class App extends javax.swing.JFrame {
     
     public static String filename = "";
     public static String header = "";
-    public static List<ConteudoArquivo> conteudo = new ArrayList<ConteudoArquivo>();
+    public static String conteudoArquivos = "";
     public static String arquivoComHash = "";
     public static String dataCriacao = "";
     public static List<Arquivo> arquivos;
+    public static List<Arquivo> garbage;
 
     /**
      * Creates new form App
      */
-    public App(String filename, String header, String headerComHash, String dataCriacao) {
+    public App(String filename, String header, String arquivoComHash, String dataCriacao, String conteudoArquivos) {
         this.filename = filename;
         this.header = header;
-        this.arquivoComHash = headerComHash;
+        this.arquivoComHash = arquivoComHash;
         this.dataCriacao = dataCriacao;
+        this.conteudoArquivos = conteudoArquivos;
         initComponents();
         montarArvore();
-        conteudoArquivo.setText(headerComHash.getBytes().length + "bytes (Criado em: " + dataCriacao + ")");
     }
 
     /**
@@ -495,26 +495,32 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_btExibirConteudoMouseExited
 
     private void btInserirArquivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btInserirArquivoMouseClicked
-                
+           
+        if(tree.getSelectionPath() == null || tree.getSelectionPath().getLastPathComponent() == null) {
+            JOptionPane.showMessageDialog(null, "Erro: Selecione o local para inserção de arquivo na árvore de Arquivos/Diretórios.");
+            return;
+        }
+        
         JFileChooser fileChooser = new JFileChooser();
         
         fileChooser.setDialogTitle("Selecione o Arquivo");
 
         if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
+                
+            inserirArquivo(fileChooser.getSelectedFile());
             
-            String conteudo = "";
-            try {
-                byte [] byteCode = Files.readAllBytes(fileChooser.getSelectedFile().toPath());
-                conteudo = new String(byteCode);
-            } catch (IOException ex) {
-                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            montarArvore();
             
         }
         
     }//GEN-LAST:event_btInserirArquivoMouseClicked
 
     private void btCriarDiretorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCriarDiretorioMouseClicked
+             
+        if(tree.getSelectionPath() == null || tree.getSelectionPath().getLastPathComponent() == null) {
+            JOptionPane.showMessageDialog(null, "Erro: Selecione o local para criação de diretório na árvore de Arquivos/Diretórios.");
+            return;
+        }
         
         String nomePasta = "";
         
@@ -548,7 +554,10 @@ public class App extends javax.swing.JFrame {
             return;
         }
         
-        // if existir pasta com mesmo nome no mesmo nivel
+        if (verificaNomePasta(nomePasta)) {
+            JOptionPane.showMessageDialog(null, "Erro: Já existe um diretório com este nome neste local.");
+            return;
+        }
         
         criarDiretorio(nomePasta);
         
@@ -620,53 +629,50 @@ public class App extends javax.swing.JFrame {
         
         try {
                 
-                SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                
-                String dataCriacao = fmt.format(new Date());
-                
-                ArquivoTreeModel arvore = ((ArquivoTreeModel)tree.getModel());
-                
-                Arquivo root = new Arquivo();
-                root.setId("0");
-                
-                if(tree.getSelectionPath() != null && tree.getSelectionPath().getLastPathComponent() != null) {
-                    root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
-                }
-                
-                String novoId = "";
-                
-                if(root.getId().equals("0") || root.getAllowsChildren()) {
-                    novoId = root.getId() + "." + (arvore.getChildCount(root) + 1);
+            SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            String dataCriacao = fmt.format(new Date());
+
+            ArquivoTreeModel arvore = ((ArquivoTreeModel)tree.getModel());
+
+            Arquivo root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
+            
+            if(!root.getAllowsChildren()){
+                if(root.getParent() == null) {
+                    root = (Arquivo)((ArquivoTreeModel)tree.getModel()).getRoot();
                 } else {
-                    novoId = ((Arquivo)root.getParent()).getId() + "." + (arvore.getChildCount(root) + 1);
+                    root = (Arquivo)root.getParent();
                 }
-                
-                if(novoId.contains("0")) novoId = novoId.replace("0.", "");
-                
-                header += "###" + nomePasta + "&&&0&&&" + dataCriacao + "&&&" + novoId;
-                
-                FileOutputStream dub = new FileOutputStream(filename);
-                
-                dub.write(header.getBytes());
-                
-                dub.close();
-                
-                // Reescrever com Hash
-                // # = Separador, $ = Final do cabeçalho                
-                arquivoComHash = gerarHashArquivo(filename) + "###"
-                        + header + "$$$";
-                
-                dub = new FileOutputStream(filename, false);
-                
-                dub.write(arquivoComHash.getBytes());
-                
-                dub.close();
-                
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
-            }        
+            }
+
+            String novoId = root.getId() + "." + (arvore.getChildCount(root) + 1);
+            
+            if(novoId.contains("0")) novoId = novoId.replace("0.", "");
+
+            header += "###" + nomePasta + "&&&0&&&" + dataCriacao + "&&&" + novoId;
+
+            FileOutputStream dub = new FileOutputStream(filename);
+
+            dub.write(header.getBytes());
+
+            dub.close();
+
+            // Reescrever com Hash
+            // # = Separador, $ = Final do cabeçalho                
+            arquivoComHash = gerarHashArquivo(filename) + "###"
+                    + header + "$$$";
+
+            dub = new FileOutputStream(filename, false);
+
+            dub.write(arquivoComHash.getBytes());
+
+            dub.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        }        
         
     }
     
@@ -702,7 +708,7 @@ public class App extends javax.swing.JFrame {
         
         list = new ArrayList<String>(list);
         
-        List<Arquivo> arquivos = new ArrayList<Arquivo>();
+        arquivos = new ArrayList<Arquivo>();
         
         list.remove(0); // Remover metadados do .dub
         
@@ -754,6 +760,8 @@ public class App extends javax.swing.JFrame {
         
         tree.setModel(arvore);
         
+        atualizarConteudoFrame();
+        
     }
 
     private void listaEncadeada(List<Arquivo> arquivos) {
@@ -763,12 +771,142 @@ public class App extends javax.swing.JFrame {
             if(arquivos.get(i).getIdInterno().contains(".")) {
                 Arquivo filho = arquivos.remove(i);
                 filho.setIdInterno(filho.getIdInterno().substring(filho.getId().indexOf(".")+1));
+                filho.setPai(pai);
                 pai.getArquivos().add(filho);
                 i = -1;
             } else {
                 pai = arquivos.get(i);
             }
         }
+    }
+
+    private boolean verificaNomePasta(String nomePasta) {
+        
+        List<Arquivo> arquivos = null;
+        Arquivo root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
+        
+        /*
+        if(root.getId().equals("0")) { // Nó root
+            arquivos = ((ArquivoTreeModel)tree.getModel()).getArquivos();
+        } else {
+            if(root.getTipo() == 1) { // Nó selecionado é Arquivo
+                arquivos = ((Arquivo)root.getParent()).getArquivos();
+            } else { // Nó selecionado é pasta
+                arquivos = root.getArquivos();
+            }
+        }
+        */
+
+        if(!root.getAllowsChildren()){
+            if(root.getParent() == null) {
+                root = (Arquivo)((ArquivoTreeModel)tree.getModel()).getRoot();
+            } else {
+                root = (Arquivo)root.getParent();
+            }
+        }
+        
+        arquivos = root.getArquivos();
+        
+        for(Arquivo a : arquivos) {
+            if(a.getNome().equalsIgnoreCase(nomePasta)) return true;
+        }
+        
+        return false;
+        
+    }
+
+    private void inserirArquivo(File arquivo) {
+        
+        try {
+            
+            byte [] conteudo = Files.readAllBytes(arquivo.toPath());
+                
+            SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            String dataCriacao = fmt.format(new Date());
+
+            ArquivoTreeModel arvore = ((ArquivoTreeModel)tree.getModel());
+
+            Arquivo root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
+            
+            if(!root.getAllowsChildren()){
+                if(root.getParent() == null) {
+                    root = (Arquivo)((ArquivoTreeModel)tree.getModel()).getRoot();
+                } else {
+                    root = (Arquivo)root.getParent();
+                }
+            }
+
+            String novoId = root.getId() + "." + (arvore.getChildCount(root) + 1);
+
+            if(novoId.contains("0")) novoId = novoId.replace("0.", "");
+            
+            // PROCURAR INICIO > GARBAGE OU FINAL DO ARQUIVO
+            
+            int inicio = conteudoArquivos.length();
+
+            header += "###" + arquivo.getName() + "&&&1&&&" + arquivo.getPath() 
+                    + "&&&" + inicio
+                    + "&&&" + conteudo.length + "&&&" + dataCriacao + "&&&" + novoId;
+            
+            conteudoArquivos += new String(conteudo);
+            
+            FileOutputStream dub = new FileOutputStream(filename);
+
+            String conteudoComHash = header + "$$$" + conteudoArquivos;
+            
+            dub.write(conteudoComHash.getBytes());
+
+            dub.close();
+
+            // Reescrever com Hash
+            // # = Separador, $ = Final do cabeçalho                
+            arquivoComHash = gerarHashArquivo(filename) + "###"
+                    + conteudoComHash;
+
+            dub = new FileOutputStream(filename, false);
+
+            dub.write(arquivoComHash.getBytes());
+
+            dub.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    private void atualizarConteudoFrame() {
+        
+        float tamanhoAux = arquivoComHash.getBytes().length / 1024;
+        String tamanhoArquivoText = arquivoComHash.getBytes().length + " bytes ";
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        
+        if(tamanhoAux >= 1) {
+            tamanhoArquivoText = df.format(tamanhoAux) + " KB ";
+            tamanhoAux /= 1024;
+        }
+        
+        if(tamanhoAux >= 1) {
+            tamanhoArquivoText = df.format(tamanhoAux) + " MB ";
+            tamanhoAux /= 1024;
+        }
+        
+        if(tamanhoAux >= 1) {
+            tamanhoArquivoText = df.format(tamanhoAux) + " GB ";
+            tamanhoAux /= 1024;
+        }
+        
+        if(tamanhoAux >= 1) {
+            tamanhoArquivoText = df.format(tamanhoAux) + " TB ";
+            tamanhoAux /= 1024;
+        }
+        
+        conteudoArquivo.setText(tamanhoArquivoText + "(Criado em: " + dataCriacao + ")");
+        
     }
     
     public class CompArquivos implements Comparator<Arquivo> {

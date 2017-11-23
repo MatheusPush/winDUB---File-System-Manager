@@ -5,7 +5,6 @@
  */
 package frame;
 
-import static algumacoisa.frmPrincipal.nomePiva;
 import entity.Arquivo;
 import java.awt.Color;
 import java.awt.Component;

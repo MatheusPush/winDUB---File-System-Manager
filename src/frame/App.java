@@ -7,6 +7,7 @@ package frame;
 
 import entity.Arquivo;
 import entity.ArquivoTreeModel;
+import entity.ConteudoArquivo;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.io.File;
@@ -44,7 +45,8 @@ public class App extends javax.swing.JFrame {
     
     public static String filename = "";
     public static String header = "";
-    public static String headerComHash = "";
+    public static List<ConteudoArquivo> conteudo = new ArrayList<ConteudoArquivo>();
+    public static String arquivoComHash = "";
     public static String dataCriacao = "";
     public static List<Arquivo> arquivos;
 
@@ -54,7 +56,7 @@ public class App extends javax.swing.JFrame {
     public App(String filename, String header, String headerComHash, String dataCriacao) {
         this.filename = filename;
         this.header = header;
-        this.headerComHash = headerComHash;
+        this.arquivoComHash = headerComHash;
         this.dataCriacao = dataCriacao;
         initComponents();
         montarArvore();
@@ -500,6 +502,14 @@ public class App extends javax.swing.JFrame {
 
         if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
             
+            String conteudo = "";
+            try {
+                byte [] byteCode = Files.readAllBytes(fileChooser.getSelectedFile().toPath());
+                conteudo = new String(byteCode);
+            } catch (IOException ex) {
+                Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
         
     }//GEN-LAST:event_btInserirArquivoMouseClicked
@@ -539,7 +549,9 @@ public class App extends javax.swing.JFrame {
             root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
         }
         
-        if(root.getId().equals("0")) metadados.setText("Conteúdo do Diretório:\n\n Dir. Raiz");
+        if(root.getId().equals("0")) {
+            metadados.setText("Conteúdo do Diretório:\n\n Dir. Raiz");
+        }
         
     }//GEN-LAST:event_treeMouseClicked
 
@@ -625,12 +637,12 @@ public class App extends javax.swing.JFrame {
                 
                 // Reescrever com Hash
                 // # = Separador, $ = Final do cabeçalho                
-                headerComHash = gerarHashArquivo(filename) + "###"
+                arquivoComHash = gerarHashArquivo(filename) + "###"
                         + header + "$$$";
                 
                 dub = new FileOutputStream(filename, false);
                 
-                dub.write(headerComHash.getBytes());
+                dub.write(arquivoComHash.getBytes());
                 
                 dub.close();
                 

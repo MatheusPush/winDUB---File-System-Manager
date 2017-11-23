@@ -80,7 +80,7 @@ public class App extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        btMoverArquivo = new javax.swing.JLabel();
+        btDesfrag = new javax.swing.JLabel();
         btInserirArquivo = new javax.swing.JLabel();
         btCriarDiretorio = new javax.swing.JLabel();
         btExtrairArquivo = new javax.swing.JLabel();
@@ -195,30 +195,30 @@ public class App extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(91, 455));
         jPanel1.setLayout(null);
 
-        btMoverArquivo.setBackground(new java.awt.Color(30, 60, 60));
-        btMoverArquivo.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        btMoverArquivo.setForeground(new java.awt.Color(255, 255, 255));
-        btMoverArquivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btMoverArquivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/moverArquivo.png"))); // NOI18N
-        btMoverArquivo.setText("Mover Arquivo");
-        btMoverArquivo.setToolTipText("Move o arquivo selecionado para outro diretório interno");
-        btMoverArquivo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btMoverArquivo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btMoverArquivo.setMaximumSize(new java.awt.Dimension(103, 103));
-        btMoverArquivo.setMinimumSize(new java.awt.Dimension(103, 103));
-        btMoverArquivo.setOpaque(true);
-        btMoverArquivo.setPreferredSize(new java.awt.Dimension(103, 103));
-        btMoverArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btMoverArquivo.addMouseListener(new java.awt.event.MouseAdapter() {
+        btDesfrag.setBackground(new java.awt.Color(30, 60, 60));
+        btDesfrag.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btDesfrag.setForeground(new java.awt.Color(255, 255, 255));
+        btDesfrag.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btDesfrag.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/desfrag.png"))); // NOI18N
+        btDesfrag.setText("Desfragmentar");
+        btDesfrag.setToolTipText("Desfragmenta o espaço do arquivo");
+        btDesfrag.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btDesfrag.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btDesfrag.setMaximumSize(new java.awt.Dimension(103, 103));
+        btDesfrag.setMinimumSize(new java.awt.Dimension(103, 103));
+        btDesfrag.setOpaque(true);
+        btDesfrag.setPreferredSize(new java.awt.Dimension(103, 103));
+        btDesfrag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btDesfrag.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btMoverArquivoMouseEntered(evt);
+                btDesfragMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btMoverArquivoMouseExited(evt);
+                btDesfragMouseExited(evt);
             }
         });
-        jPanel1.add(btMoverArquivo);
-        btMoverArquivo.setBounds(0, 206, 103, 103);
+        jPanel1.add(btDesfrag);
+        btDesfrag.setBounds(0, 412, 103, 103);
 
         btInserirArquivo.setBackground(new java.awt.Color(30, 60, 60));
         btInserirArquivo.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -299,7 +299,7 @@ public class App extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btExtrairArquivo);
-        btExtrairArquivo.setBounds(0, 309, 103, 103);
+        btExtrairArquivo.setBounds(0, 206, 103, 103);
 
         btExibirConteudo.setBackground(new java.awt.Color(30, 60, 60));
         btExibirConteudo.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -324,7 +324,7 @@ public class App extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btExibirConteudo);
-        btExibirConteudo.setBounds(0, 412, 103, 103);
+        btExibirConteudo.setBounds(0, 309, 103, 103);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 103, 515);
@@ -464,15 +464,15 @@ public class App extends javax.swing.JFrame {
         btInserirArquivo.setBackground(new Color(30, 60, 60));
     }//GEN-LAST:event_btInserirArquivoMouseExited
 
-    private void btMoverArquivoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btMoverArquivoMouseEntered
+    private void btDesfragMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btDesfragMouseEntered
         // TODO add your handling code here:
-        btMoverArquivo.setBackground(new Color(45, 90, 90));
-    }//GEN-LAST:event_btMoverArquivoMouseEntered
+        btDesfrag.setBackground(new Color(45, 90, 90));
+    }//GEN-LAST:event_btDesfragMouseEntered
 
-    private void btMoverArquivoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btMoverArquivoMouseExited
+    private void btDesfragMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btDesfragMouseExited
         // TODO add your handling code here:
-        btMoverArquivo.setBackground(new Color(30, 60, 60));
-    }//GEN-LAST:event_btMoverArquivoMouseExited
+        btDesfrag.setBackground(new Color(30, 60, 60));
+    }//GEN-LAST:event_btDesfragMouseExited
 
     private void btExtrairArquivoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btExtrairArquivoMouseEntered
         // TODO add your handling code here:
@@ -605,11 +605,11 @@ public class App extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btClose;
     private javax.swing.JLabel btCriarDiretorio;
+    private javax.swing.JLabel btDesfrag;
     private javax.swing.JLabel btExibirConteudo;
     private javax.swing.JLabel btExtrairArquivo;
     private javax.swing.JLabel btInserirArquivo;
     private javax.swing.JLabel btMinimizar;
-    private javax.swing.JLabel btMoverArquivo;
     private javax.swing.JLabel conteudoArquivo;
     private javax.swing.JLabel frameDrag;
     private javax.swing.JPanel frameDrag1;

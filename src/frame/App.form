@@ -201,7 +201,7 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="btMoverArquivo">
+        <Component class="javax.swing.JLabel" name="btDesfrag">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="3c" green="3c" red="1e" type="rgb"/>
@@ -214,10 +214,10 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/img/moverArquivo.png"/>
+              <Image iconType="3" name="/img/desfrag.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Mover Arquivo"/>
-            <Property name="toolTipText" type="java.lang.String" value="Move o arquivo selecionado para outro diret&#xf3;rio interno"/>
+            <Property name="text" type="java.lang.String" value="Desfragmentar"/>
+            <Property name="toolTipText" type="java.lang.String" value="Desfragmenta o espa&#xe7;o do arquivo"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Cursor em Forma de M&#xe3;o"/>
             </Property>
@@ -235,12 +235,12 @@
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btMoverArquivoMouseEntered"/>
-            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btMoverArquivoMouseExited"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btDesfragMouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btDesfragMouseExited"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="206" width="-1" height="-1"/>
+              <AbsoluteConstraints x="0" y="412" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -371,7 +371,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="309" width="-1" height="-1"/>
+              <AbsoluteConstraints x="0" y="206" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -414,7 +414,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="0" y="412" width="-1" height="-1"/>
+              <AbsoluteConstraints x="0" y="309" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>

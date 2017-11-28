@@ -26,7 +26,6 @@ public class ArquivoTreeModel implements TreeModel {
     public ArquivoTreeModel(List<Arquivo> arquivos) {
         
         this.arquivos = arquivos;
-        root.setNome("root");
         root.setId("0");
         root.setIdInterno("0");
         

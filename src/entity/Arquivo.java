@@ -154,4 +154,40 @@ public class Arquivo implements TreeNode{
     public void setPai(Arquivo pai) {
         this.pai = pai;
     }
+    
+    public int getQtdArquivos() {
+        int count = 0;
+        List<Arquivo> arq = getArquivos();
+        
+        for (int i = 0; i < arq.size(); i++) {
+            if(arq.get(i).getTipo() == 1)
+                count++;
+        }
+        return count;
+    }
+    
+    public int getQtdPastas() {
+        int count = 0;
+        List<Arquivo> arq = getArquivos();
+        
+        for (int i = 0; i < arq.size(); i++) {
+            if(arq.get(i).getTipo() == 0)
+                count++;
+        }
+        return count;
+    }
+    
+    public String getDubPath(Arquivo root) {
+        String str = this.nome;
+        Arquivo arq = root;
+        
+        while(true){
+            arq = arq.getPai();
+            
+            if(arq != null) str = arq.getNome() + "\\" + str;
+            else break;
+        }
+        return ":\\" + str;
+    }
+    
 }

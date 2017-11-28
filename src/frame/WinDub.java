@@ -72,7 +72,7 @@ public class WinDub extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btMinimizar = new javax.swing.JLabel();
         frameDrag = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        version = new javax.swing.JLabel();
         lblBemVindo = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
@@ -195,10 +195,10 @@ public class WinDub extends javax.swing.JFrame {
         getContentPane().add(frameDrag);
         frameDrag.setBounds(0, 0, 860, 515);
 
-        jLabel3.setForeground(new java.awt.Color(100, 120, 120));
-        jLabel3.setText("v 1.0.2");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(804, 474, 60, 40);
+        version.setForeground(new java.awt.Color(100, 120, 120));
+        version.setText("v 1.1.3");
+        getContentPane().add(version);
+        version.setBounds(804, 474, 60, 40);
 
         lblBemVindo.setBackground(new java.awt.Color(30, 60, 60));
         lblBemVindo.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
@@ -251,7 +251,11 @@ public class WinDub extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        System.exit(0);
+        
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?", "Sair", JOptionPane.YES_NO_OPTION);
+        
+        if(dialogResult == JOptionPane.YES_OPTION)System.exit(0);
+        
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
@@ -325,7 +329,7 @@ public class WinDub extends javax.swing.JFrame {
                 
                 dataCriacao = fmt.format(new Date());
                 
-                header = nome + "&&&" + caminho + "&&&" + dataCriacao;
+                header = nome + "&&&" + caminho + "&&&" + dataCriacao + "$$$";
                 
                 dub.write(header.getBytes());
                 
@@ -334,7 +338,7 @@ public class WinDub extends javax.swing.JFrame {
                 // Reescrever com Hash
                 // # = Separador, $ = Final do cabeçalho                
                 headerComHash = gerarHashArquivo(caminho) + "###"
-                        + header + "$$$";
+                        + header;
                 
                 dub = new FileOutputStream(novoArquivo + ".dub", false);
                 
@@ -348,8 +352,7 @@ public class WinDub extends javax.swing.JFrame {
                 Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            App app = new App(novoArquivo.getPath() + ".dub", header, headerComHash, dataCriacao, "");
-            app.getNomeArquivo().setText("(" + nome + ".dub)");
+            App app = new App(novoArquivo.getPath() + ".dub", header, headerComHash, dataCriacao, new byte[0]);
             app.setVisible(true);
 
             this.setAlwaysOnTop(true);
@@ -434,8 +437,7 @@ public class WinDub extends javax.swing.JFrame {
                 String metadado = header.split("###")[0];
                 String dataCriacao = metadado.split("&&&")[2];
                 
-                App app = new App(filename, header, conteudo, dataCriacao, conteudoArquivos);
-                app.getNomeArquivo().setText("(" + fileChooser.getSelectedFile().getName() + ")");   
+                App app = new App(filename, header, conteudo, dataCriacao, conteudoArquivos.getBytes());
                 app.setVisible(true);
 
                 this.setAlwaysOnTop(true);
@@ -545,9 +547,9 @@ public class WinDub extends javax.swing.JFrame {
     private javax.swing.JLabel frameDrag;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton lblBemVindo;
+    private javax.swing.JLabel version;
     // End of variables declaration//GEN-END:variables
 
     private String gerarHashArquivo(String path) {
@@ -558,6 +560,7 @@ public class WinDub extends javax.swing.JFrame {
             MessageDigest md = MessageDigest.getInstance("MD5");
             
             byte [] array = Files.readAllBytes(new File(path + ".dub").toPath());
+            String a = new String(array);
             
             md.update(array, 0, array.length);
             byte[] hashMd5 = md.digest();

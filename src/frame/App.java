@@ -9,6 +9,7 @@ import entity.Arquivo;
 import entity.ArquivoTreeModel;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -31,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -44,7 +46,7 @@ public class App extends javax.swing.JFrame {
     
     public static String filename = "";
     public static String header = "";
-    public static String conteudoArquivos = "";
+    public static byte [] conteudoArquivos;
     public static String arquivoComHash = "";
     public static String dataCriacao = "";
     public static List<Arquivo> arquivos;
@@ -53,9 +55,9 @@ public class App extends javax.swing.JFrame {
     /**
      * Creates new form App
      */
-    public App(String filename, String header, String arquivoComHash, String dataCriacao, String conteudoArquivos) {
+    public App(String filename, String header, String arquivoComHash, String dataCriacao, byte [] conteudoArquivos) {
         this.filename = filename;
-        this.header = header;
+        this.header = header.replace("$$$", "");
         this.arquivoComHash = arquivoComHash;
         this.dataCriacao = dataCriacao;
         this.conteudoArquivos = conteudoArquivos;
@@ -74,9 +76,9 @@ public class App extends javax.swing.JFrame {
 
         top = new javax.swing.JPanel();
         btClose = new javax.swing.JLabel();
+        btVoltar = new javax.swing.JLabel();
         btMinimizar = new javax.swing.JLabel();
         frameDrag = new javax.swing.JLabel();
-        nomeArquivo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -92,6 +94,7 @@ public class App extends javax.swing.JFrame {
         tree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
         metadados = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("winDUB");
@@ -137,6 +140,26 @@ public class App extends javax.swing.JFrame {
         top.add(btClose);
         btClose.setBounds(735, 2, 14, 20);
 
+        btVoltar.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
+        btVoltar.setForeground(new java.awt.Color(204, 204, 204));
+        btVoltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/voltar.png"))); // NOI18N
+        btVoltar.setToolTipText("Voltar");
+        btVoltar.setAlignmentY(0.0F);
+        btVoltar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btVoltar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btVoltarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btVoltarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btVoltarMouseExited(evt);
+            }
+        });
+        top.add(btVoltar);
+        btVoltar.setBounds(0, 0, 30, 30);
+
         btMinimizar.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
         btMinimizar.setForeground(new java.awt.Color(204, 204, 204));
         btMinimizar.setText("_");
@@ -168,23 +191,17 @@ public class App extends javax.swing.JFrame {
         top.add(frameDrag);
         frameDrag.setBounds(0, 0, 757, 30);
 
-        nomeArquivo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        nomeArquivo.setForeground(new java.awt.Color(255, 255, 255));
-        nomeArquivo.setText("[NomeArquivo.dub]");
-        top.add(nomeArquivo);
-        nomeArquivo.setBounds(80, 2, 628, 26);
-
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("WIN");
         top.add(jLabel1);
-        jLabel1.setBounds(8, 8, 30, 20);
+        jLabel1.setBounds(344, 8, 30, 20);
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 22)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("DUB");
         top.add(jLabel2);
-        jLabel2.setBounds(34, 0, 48, 30);
+        jLabel2.setBounds(370, 0, 48, 30);
 
         getContentPane().add(top);
         top.setBounds(103, 0, 757, 30);
@@ -291,6 +308,9 @@ public class App extends javax.swing.JFrame {
         btExtrairArquivo.setPreferredSize(new java.awt.Dimension(103, 103));
         btExtrairArquivo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btExtrairArquivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btExtrairArquivoMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btExtrairArquivoMouseEntered(evt);
             }
@@ -347,6 +367,7 @@ public class App extends javax.swing.JFrame {
         frameDrag1.setBounds(103, 485, 757, 30);
 
         jPanel2.setBackground(new java.awt.Color(90, 170, 170));
+        jPanel2.setLayout(null);
 
         tree.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tree.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -358,6 +379,9 @@ public class App extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tree);
 
+        jPanel2.add(jScrollPane1);
+        jScrollPane1.setBounds(10, 11, 465, 433);
+
         metadados.setColumns(19);
         metadados.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         metadados.setRows(16);
@@ -365,26 +389,15 @@ public class App extends javax.swing.JFrame {
         metadados.setEnabled(false);
         jScrollPane2.setViewportView(metadados);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jPanel2.add(jScrollPane2);
+        jScrollPane2.setBounds(485, 34, 262, 410);
+
+        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("INFORMAÇÕES");
+        jPanel2.add(jLabel3);
+        jLabel3.setBounds(484, 8, 260, 20);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(103, 30, 757, 455);
@@ -395,7 +408,11 @@ public class App extends javax.swing.JFrame {
 
     private void btCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCloseMouseClicked
         // TODO add your handling code here:
-        System.exit(0);
+        
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?", "Sair", JOptionPane.YES_NO_OPTION);
+        
+        if(dialogResult == JOptionPane.YES_OPTION)System.exit(0);
+        
     }//GEN-LAST:event_btCloseMouseClicked
 
     private void btCloseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCloseMouseEntered
@@ -574,11 +591,123 @@ public class App extends javax.swing.JFrame {
             root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
         }
         
-        if(root.getId().equals("0")) {
-            metadados.setText("Conteúdo do Diretório:\n\n Dir. Raiz");
+        String tamanhoArquivoText = "";
+        
+        if(root.getTamanho() != 0) {
+            float tamanhoAux = root.getTamanho() / 1024;
+            tamanhoArquivoText = root.getTamanho() + " bytes ";
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
+
+            if(tamanhoAux >= 1) {
+                tamanhoArquivoText = df.format(tamanhoAux) + " KB ";
+                tamanhoAux /= 1024;
+            }
+
+            if(tamanhoAux >= 1) {
+                tamanhoArquivoText = df.format(tamanhoAux) + " MB ";
+                tamanhoAux /= 1024;
+            }
+
+            if(tamanhoAux >= 1) {
+                tamanhoArquivoText = df.format(tamanhoAux) + " GB ";
+                tamanhoAux /= 1024;
+            }
+
+            if(tamanhoAux >= 1) {
+                tamanhoArquivoText = df.format(tamanhoAux) + " TB ";
+                tamanhoAux /= 1024;
+            }
+            
         }
         
+        String metadado = header.split("###")[0];
+        String nomeArquivo = metadado.split("&&&")[0] + ".dub";
+        
+        if(root.getId().equals("-")) metadados.setText("");
+        else if(root.getId().equals("0")) metadados.setText("Diretório Raiz:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")));
+        else if(root.getTipo() == 0) metadados.setText("Diretório:\n" + root.getNome() + "\n\n"
+                                                        + "Local Interno:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")) + root.getDubPath(root) + "\n\n"
+                                                        + "Data de Criação:\n" + root.getCriacao() + "\n\n"
+                                                        + "Contéudo:\n"
+                                                        + root.getQtdArquivos() + " Arquivo(s)\n"
+                                                        + root.getQtdPastas() + " Pasta(s)\n");
+        else if(root.getTipo() == 1) metadados.setText("Arquivo:\n" + root.getNome() + "\n\n"
+                                                        + "Local Interno:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")) + root.getDubPath(root) + "\n\n"
+                                                        + "Origem:\n" + root.getPath() + "\n\n"
+                                                        + "Tamanho:\n" + tamanhoArquivoText + "\n\n"
+                                                        + "Data de Criação:\n" + root.getCriacao());
+        
+        
     }//GEN-LAST:event_treeMouseClicked
+
+    private void btVoltarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVoltarMouseClicked
+        
+        WinDub wd = new WinDub();
+        wd.setVisible(true);
+
+        this.setAlwaysOnTop(true);
+
+        SwingWorker w = new SwingWorker() {
+        @Override
+        protected Object doInBackground() throws Exception {
+            for(int i = 50; i > 0; i--) {
+            setOpacity(i * 0.02f);
+            try {
+                    Thread.sleep(20);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            setVisible(false);
+
+            return 0;
+
+        }
+
+        };
+
+        w.execute();
+        
+    }//GEN-LAST:event_btVoltarMouseClicked
+
+    private void btVoltarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVoltarMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btVoltarMouseEntered
+
+    private void btVoltarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btVoltarMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btVoltarMouseExited
+
+    private void btExtrairArquivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btExtrairArquivoMouseClicked
+        if(tree.getSelectionPath() == null || tree.getSelectionPath().getLastPathComponent() == null) {
+            JOptionPane.showMessageDialog(null, "Erro: Selecione um arquivo na árvore de Arquivos/Diretórios para extração.");
+            return;
+        }
+        
+        Arquivo arq = (Arquivo) tree.getSelectionPath().getLastPathComponent();
+        if(arq.getTipo() != 1) {
+            JOptionPane.showMessageDialog(null, "Erro: Diretórios não podem ser extraídos.");
+            return;
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Salvar como");
+        fileChooser.setSelectedFile(new File(arq.getNome()));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("*" + arq.getNome().substring(arq.getNome().lastIndexOf(".")),
+                                                                arq.getNome().substring(arq.getNome().lastIndexOf("."))));
+
+        int opt = fileChooser.showSaveDialog(null);
+        if (opt == JFileChooser.APPROVE_OPTION) {
+            
+            extrairArquivo(arq, fileChooser);
+        
+            montarArvore();
+            
+        }
+        
+    }//GEN-LAST:event_btExtrairArquivoMouseClicked
 
     public JLabel getConteudoArquivo() {
         return conteudoArquivo;
@@ -586,14 +715,6 @@ public class App extends javax.swing.JFrame {
 
     public void setConteudoArquivo(JLabel conteudoArquivo) {
         this.conteudoArquivo = conteudoArquivo;
-    }
-
-    public JLabel getNomeArquivo() {
-        return nomeArquivo;
-    }
-
-    public void setNomeArquivo(JLabel nomeArquivo) {
-        this.nomeArquivo = nomeArquivo;
     }
 
     public JTree getTree() {
@@ -610,17 +731,18 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JLabel btExtrairArquivo;
     private javax.swing.JLabel btInserirArquivo;
     private javax.swing.JLabel btMinimizar;
+    private javax.swing.JLabel btVoltar;
     private javax.swing.JLabel conteudoArquivo;
     private javax.swing.JLabel frameDrag;
     private javax.swing.JPanel frameDrag1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea metadados;
-    private javax.swing.JLabel nomeArquivo;
     private javax.swing.JPanel top;
     private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
@@ -650,17 +772,19 @@ public class App extends javax.swing.JFrame {
             if(novoId.contains("0")) novoId = novoId.replace("0.", "");
 
             header += "###" + nomePasta + "&&&0&&&" + dataCriacao + "&&&" + novoId;
-
+            
             FileOutputStream dub = new FileOutputStream(filename);
 
-            dub.write(header.getBytes());
+            String conteudoComHeader = header + "$$$" + new String(conteudoArquivos);
+            
+            dub.write(conteudoComHeader.getBytes());
 
             dub.close();
 
             // Reescrever com Hash
             // # = Separador, $ = Final do cabeçalho                
             arquivoComHash = gerarHashArquivo(filename) + "###"
-                    + header + "$$$";
+                    + conteudoComHeader;
 
             dub = new FileOutputStream(filename, false);
 
@@ -758,6 +882,11 @@ public class App extends javax.swing.JFrame {
         
         ArquivoTreeModel arvore = new ArquivoTreeModel(arquivos);
         
+        String metadado = header.split("###")[0];
+        String nomeArquivo = metadado.split("&&&")[0] + ".dub";
+        
+        ((Arquivo)arvore.getRoot()).setNome(nomeArquivo);
+        
         tree.setModel(arvore);
         
         atualizarConteudoFrame();
@@ -784,18 +913,6 @@ public class App extends javax.swing.JFrame {
         
         List<Arquivo> arquivos = null;
         Arquivo root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
-        
-        /*
-        if(root.getId().equals("0")) { // Nó root
-            arquivos = ((ArquivoTreeModel)tree.getModel()).getArquivos();
-        } else {
-            if(root.getTipo() == 1) { // Nó selecionado é Arquivo
-                arquivos = ((Arquivo)root.getParent()).getArquivos();
-            } else { // Nó selecionado é pasta
-                arquivos = root.getArquivos();
-            }
-        }
-        */
 
         if(!root.getAllowsChildren()){
             if(root.getParent() == null) {
@@ -843,26 +960,31 @@ public class App extends javax.swing.JFrame {
             
             // PROCURAR INICIO > GARBAGE OU FINAL DO ARQUIVO
             
-            int inicio = conteudoArquivos.length();
+            int inicio = conteudoArquivos.length;
 
             header += "###" + arquivo.getName() + "&&&1&&&" + arquivo.getPath() 
                     + "&&&" + inicio
                     + "&&&" + conteudo.length + "&&&" + dataCriacao + "&&&" + novoId;
             
-            conteudoArquivos += new String(conteudo);
+            //conteudoArquivos += conteudoStr;
+            
+            byte [] novoConteudoArquivos = Arrays.copyOf(conteudoArquivos, conteudoArquivos.length + conteudo.length);
+            System.arraycopy(conteudo, 0, novoConteudoArquivos, conteudoArquivos.length, conteudo.length);
+            
+            conteudoArquivos = novoConteudoArquivos;
             
             FileOutputStream dub = new FileOutputStream(filename);
 
-            String conteudoComHash = header + "$$$" + conteudoArquivos;
+            String conteudoComHeader = header + "$$$" + new String(conteudoArquivos);
             
-            dub.write(conteudoComHash.getBytes());
+            dub.write(conteudoComHeader.getBytes());
 
             dub.close();
 
             // Reescrever com Hash
             // # = Separador, $ = Final do cabeçalho                
             arquivoComHash = gerarHashArquivo(filename) + "###"
-                    + conteudoComHash;
+                    + conteudoComHeader;
 
             dub = new FileOutputStream(filename, false);
 
@@ -906,6 +1028,32 @@ public class App extends javax.swing.JFrame {
         }
         
         conteudoArquivo.setText(tamanhoArquivoText + "(Criado em: " + dataCriacao + ")");
+        
+    }
+
+    private void extrairArquivo(Arquivo arq, JFileChooser fileChooser) {
+        
+        // Salvar conteudo
+        
+        try {
+                
+            FileOutputStream fos = new FileOutputStream(fileChooser.getSelectedFile());
+            DataOutputStream dos = new DataOutputStream(fos);
+
+            for(int i = arq.getInicio(); i < arq.getInicio()+arq.getTamanho(); i++) {
+                dos.writeByte(conteudoArquivos[i]);
+            }
+            
+            dos.close();
+            fos.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // Remover do header
         
     }
     

@@ -703,6 +703,8 @@ public class App extends javax.swing.JFrame {
             
             extrairArquivo(arq, fileChooser);
         
+            extrairArquivoHeader(arq);
+            
             montarArvore();
             
         }
@@ -1053,7 +1055,65 @@ public class App extends javax.swing.JFrame {
             Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    private void extrairArquivoHeader(Arquivo arq) {
+        
         // Remover do header
+        
+        String [] headerSplit = header.split("###");
+        int linhaRemovida = 0;
+        
+        for(int i = 1; i < headerSplit.length; i++) {
+            String tipo = headerSplit[i].split("&&&")[1];
+            if(tipo.equals("1")) {
+                String id = headerSplit[i].split("&&&")[6];
+                if(id.equals(arq.getId())) {
+                    linhaRemovida = i;
+                    break;
+                } 
+            }
+        }
+        
+        String novoHeader = "";
+        
+        for(int i = 0; i < headerSplit.length; i++) {
+            if(i != linhaRemovida){
+                novoHeader += headerSplit[i] + "###";
+            }
+        }
+        
+        novoHeader += "?";
+        novoHeader = novoHeader.replace("###?", "");        
+        
+        header = novoHeader;
+        
+        try {
+            
+            FileOutputStream dub = new FileOutputStream(filename);
+
+            String conteudoComHeader = header + "$$$" + new String(conteudoArquivos);
+            
+            dub.write(conteudoComHeader.getBytes());
+
+            dub.close();
+
+            // Reescrever com Hash
+            // # = Separador, $ = Final do cabeçalho                
+            arquivoComHash = gerarHashArquivo(filename) + "###"
+                    + conteudoComHeader;
+
+            dub = new FileOutputStream(filename, false);
+
+            dub.write(arquivoComHash.getBytes());
+
+            dub.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(WinDub.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     

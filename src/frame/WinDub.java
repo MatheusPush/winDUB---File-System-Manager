@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -422,6 +423,9 @@ public class WinDub extends javax.swing.JFrame {
 
         if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
             
+            this.setCursor(Cursor.WAIT_CURSOR);
+            this.setEnabled(false);
+            
             if (compararHashArquivo(fileChooser.getSelectedFile().getAbsolutePath())) {
                 
                 String conteudo = "";
@@ -436,7 +440,7 @@ public class WinDub extends javax.swing.JFrame {
                 String conteudoArquivos = conteudo.substring(conteudo.indexOf("$$$")+3);
                 String metadado = header.split("###")[0];
                 String dataCriacao = metadado.split("&&&")[2];
-                
+                        
                 App app = new App(filename, header, conteudo, dataCriacao, conteudoArquivos.getBytes());
                 app.setVisible(true);
 
@@ -474,6 +478,10 @@ public class WinDub extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Erro: Não é possível importar o arquivo selecionado "
                         + "pois ele teve seu código alterado.");
             }
+            
+            this.setEnabled(true);
+            this.setCursor(Cursor.DEFAULT_CURSOR);
+                
         }
         
     }//GEN-LAST:event_btAbrirActionPerformed

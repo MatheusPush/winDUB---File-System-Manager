@@ -166,9 +166,29 @@ public class Arquivo implements TreeNode{
         return count;
     }
     
+    public int getQtdArquivos(List<Arquivo> arq) {
+        int count = 0;
+        
+        for (int i = 0; i < arq.size(); i++) {
+            if(arq.get(i).getTipo() == 1)
+                count++;
+        }
+        return count;
+    }
+    
     public int getQtdPastas() {
         int count = 0;
         List<Arquivo> arq = getArquivos();
+        
+        for (int i = 0; i < arq.size(); i++) {
+            if(arq.get(i).getTipo() == 0)
+                count++;
+        }
+        return count;
+    }
+    
+    public int getQtdPastas(List<Arquivo> arq) {
+        int count = 0;
         
         for (int i = 0; i < arq.size(); i++) {
             if(arq.get(i).getTipo() == 0)

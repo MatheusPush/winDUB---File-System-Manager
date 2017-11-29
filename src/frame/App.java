@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -63,6 +64,7 @@ public class App extends javax.swing.JFrame {
         this.conteudoArquivos = conteudoArquivos;
         initComponents();
         montarArvore();
+        metadados.setDisabledTextColor(Color.BLACK);
     }
 
     /**
@@ -336,6 +338,9 @@ public class App extends javax.swing.JFrame {
         btExibirConteudo.setPreferredSize(new java.awt.Dimension(103, 103));
         btExibirConteudo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btExibirConteudo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btExibirConteudoMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btExibirConteudoMouseEntered(evt);
             }
@@ -514,7 +519,7 @@ public class App extends javax.swing.JFrame {
     private void btInserirArquivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btInserirArquivoMouseClicked
            
         if(tree.getSelectionPath() == null || tree.getSelectionPath().getLastPathComponent() == null) {
-            JOptionPane.showMessageDialog(null, "Erro: Selecione o local para inserção de arquivo na árvore de Arquivos/Diretórios.");
+            JOptionPane.showMessageDialog(null, "Selecione o local para inserção de arquivo na árvore de Arquivos/Diretórios.");
             return;
         }
         
@@ -524,9 +529,16 @@ public class App extends javax.swing.JFrame {
 
         if(fileChooser.showSaveDialog(new JFrame()) == JFileChooser.APPROVE_OPTION) {
                 
+            this.setCursor(Cursor.WAIT_CURSOR);
+            this.setEnabled(false);
+            
             inserirArquivo(fileChooser.getSelectedFile());
             
             montarArvore();
+            
+            this.setEnabled(true);
+            this.setCursor(Cursor.DEFAULT_CURSOR);
+            JOptionPane.showMessageDialog(null, "Arquivo inserido com sucesso!");
             
         }
         
@@ -535,7 +547,7 @@ public class App extends javax.swing.JFrame {
     private void btCriarDiretorioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCriarDiretorioMouseClicked
              
         if(tree.getSelectionPath() == null || tree.getSelectionPath().getLastPathComponent() == null) {
-            JOptionPane.showMessageDialog(null, "Erro: Selecione o local para criação de diretório na árvore de Arquivos/Diretórios.");
+            JOptionPane.showMessageDialog(null, "Selecione o local para criação de diretório na árvore de Arquivos/Diretórios.");
             return;
         }
         
@@ -624,20 +636,38 @@ public class App extends javax.swing.JFrame {
         String metadado = header.split("###")[0];
         String nomeArquivo = metadado.split("&&&")[0] + ".dub";
         
-        if(root.getId().equals("-")) metadados.setText("");
-        else if(root.getId().equals("0")) metadados.setText("Diretório Raiz:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")));
-        else if(root.getTipo() == 0) metadados.setText("Diretório:\n" + root.getNome() + "\n\n"
-                                                        + "Local Interno:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")) + root.getDubPath(root) + "\n\n"
-                                                        + "Data de Criação:\n" + root.getCriacao() + "\n\n"
-                                                        + "Contéudo:\n"
-                                                        + root.getQtdArquivos() + " Arquivo(s)\n"
-                                                        + root.getQtdPastas() + " Pasta(s)\n");
-        else if(root.getTipo() == 1) metadados.setText("Arquivo:\n" + root.getNome() + "\n\n"
-                                                        + "Local Interno:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")) + root.getDubPath(root) + "\n\n"
-                                                        + "Origem:\n" + root.getPath() + "\n\n"
-                                                        + "Tamanho:\n" + tamanhoArquivoText + "\n\n"
-                                                        + "Data de Criação:\n" + root.getCriacao());
+        List<Arquivo> arquivosRoot = ((ArquivoTreeModel)tree.getModel()).getArquivos();
         
+        if(root.getId().equals("-")) {
+            
+            metadados.setText("");
+            
+        } else if(root.getId().equals("0")) {
+            
+            metadados.setText("Diretório Raiz:\n" 
+                            + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")) + "\n\n"
+                            + "Contéudo:\n"
+                            + root.getQtdArquivos(arquivosRoot) + " Arquivo(s)\n"
+                            + root.getQtdPastas(arquivosRoot) + " Pasta(s)\n");
+        
+        } else if(root.getTipo() == 0) {
+            
+            metadados.setText("Diretório:\n" + root.getNome() + "\n\n"
+                            + "Local Interno:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")) + root.getDubPath(root) + "\n\n"
+                            + "Data de Criação:\n" + root.getCriacao() + "\n\n"
+                            + "Contéudo:\n"
+                            + root.getQtdArquivos() + " Arquivo(s)\n"
+                            + root.getQtdPastas() + " Pasta(s)\n");
+        
+        } else if(root.getTipo() == 1) {
+            
+            metadados.setText("Arquivo:\n" + root.getNome() + "\n\n"
+                            + "Local Interno:\n" + nomeArquivo.substring(0, nomeArquivo.lastIndexOf(".")) + root.getDubPath(root) + "\n\n"
+                            + "Origem:\n" + root.getPath() + "\n\n"
+                            + "Tamanho:\n" + tamanhoArquivoText + "\n\n"
+                            + "Data de Criação:\n" + root.getCriacao());
+        
+        }
         
     }//GEN-LAST:event_treeMouseClicked
 
@@ -682,7 +712,7 @@ public class App extends javax.swing.JFrame {
 
     private void btExtrairArquivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btExtrairArquivoMouseClicked
         if(tree.getSelectionPath() == null || tree.getSelectionPath().getLastPathComponent() == null) {
-            JOptionPane.showMessageDialog(null, "Erro: Selecione um arquivo na árvore de Arquivos/Diretórios para extração.");
+            JOptionPane.showMessageDialog(null, "Selecione um arquivo na árvore de Arquivos/Diretórios para extração.");
             return;
         }
         
@@ -700,6 +730,9 @@ public class App extends javax.swing.JFrame {
 
         int opt = fileChooser.showSaveDialog(null);
         if (opt == JFileChooser.APPROVE_OPTION) {
+
+            this.setCursor(Cursor.WAIT_CURSOR);
+            this.setEnabled(false);
             
             extrairArquivo(arq, fileChooser);
         
@@ -707,9 +740,43 @@ public class App extends javax.swing.JFrame {
             
             montarArvore();
             
+            this.setEnabled(true);
+            this.setCursor(Cursor.DEFAULT_CURSOR);
+            JOptionPane.showMessageDialog(null, "Arquivo extaído com sucesso!");
+            
         }
         
     }//GEN-LAST:event_btExtrairArquivoMouseClicked
+
+    private void btExibirConteudoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btExibirConteudoMouseClicked
+        
+        if(tree.getSelectionPath() == null || tree.getSelectionPath().getLastPathComponent() == null) {
+            JOptionPane.showMessageDialog(null, "Selecione um arquivo na árvore de Arquivos/Diretórios para extração.");
+            return;
+        }
+        
+        Arquivo root = ((Arquivo)tree.getSelectionPath().getLastPathComponent());
+        
+        String ext = root.getNome().substring(root.getNome().lastIndexOf("."));
+        
+        if(!ext.equals(".txt")){
+            JOptionPane.showMessageDialog(null, "Erro: Só é possível exibir conteúdos com extensão .txt");
+            return;
+        }
+        
+        ConteudoTexto ct = new ConteudoTexto(this, true);
+        
+        ct.setTitle(root.getNome());
+        
+        byte [] texto = new byte[root.getTamanho()];
+        
+        for(int i = 0; i < root.getTamanho(); i++) texto[i] = conteudoArquivos[root.getInicio() + i];
+        
+        ct.getjTextArea1().setText(new String(texto));
+        
+        ct.setVisible(true);
+        
+    }//GEN-LAST:event_btExibirConteudoMouseClicked
 
     public JLabel getConteudoArquivo() {
         return conteudoArquivo;
@@ -893,6 +960,8 @@ public class App extends javax.swing.JFrame {
         
         atualizarConteudoFrame();
         
+        metadados.setText("");
+        
     }
 
     private void listaEncadeada(List<Arquivo> arquivos) {
@@ -924,7 +993,8 @@ public class App extends javax.swing.JFrame {
             }
         }
         
-        arquivos = root.getArquivos();
+        if(root.getId().equals("0")) arquivos = ((ArquivoTreeModel)tree.getModel()).getArquivos();
+        else arquivos = root.getArquivos();
         
         for(Arquivo a : arquivos) {
             if(a.getNome().equalsIgnoreCase(nomePasta)) return true;

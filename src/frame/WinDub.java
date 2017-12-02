@@ -197,7 +197,7 @@ public class WinDub extends javax.swing.JFrame {
         frameDrag.setBounds(0, 0, 860, 515);
 
         version.setForeground(new java.awt.Color(100, 120, 120));
-        version.setText("v 1.1.3");
+        version.setText("v 1.1.4");
         getContentPane().add(version);
         version.setBounds(804, 474, 60, 40);
 

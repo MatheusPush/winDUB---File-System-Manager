@@ -51,7 +51,6 @@ public class App extends javax.swing.JFrame {
     public static String arquivoComHash = "";
     public static String dataCriacao = "";
     public static List<Arquivo> arquivos;
-    public static List<Arquivo> garbage;
 
     /**
      * Creates new form App
@@ -229,6 +228,9 @@ public class App extends javax.swing.JFrame {
         btDesfrag.setPreferredSize(new java.awt.Dimension(103, 103));
         btDesfrag.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btDesfrag.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btDesfragMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btDesfragMouseEntered(evt);
             }
@@ -777,6 +779,126 @@ public class App extends javax.swing.JFrame {
         ct.setVisible(true);
         
     }//GEN-LAST:event_btExibirConteudoMouseClicked
+
+    private void btDesfragMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btDesfragMouseClicked
+        
+        this.setCursor(Cursor.WAIT_CURSOR);
+        this.setEnabled(false);
+        
+        // Exlcuir conteudo
+        
+        List<Arquivo> arquivosAux = new ArrayList<Arquivo>(); // Apenas arquivos inseridos (sem pastas)
+        
+        int tamanhoConteudoArquivos = 0;
+        
+        // Ler header
+        List<String> list = Arrays.asList(header.split("###"));
+        
+        list = new ArrayList<String>(list);
+        
+        String novoHeader = list.remove(0); // Remover metadados do .dub
+        
+        for(String s : list) {
+            String [] arquivoPart = s.split("&&&");
+            
+            if(Integer.parseInt(arquivoPart[1]) == 0) {
+            
+                // Diretorio
+                Arquivo a = new Arquivo();
+                a.setNome(arquivoPart[0]);
+                a.setTipo(Integer.parseInt(arquivoPart[1]));
+                a.setCriacao(arquivoPart[2]);
+                a.setId(arquivoPart[3]);
+                a.setIdInterno(a.getId());
+                
+                arquivosAux.add(a);
+                
+            } else {
+            
+                // Arquivo
+                Arquivo a = new Arquivo();
+                a.setNome(arquivoPart[0]);
+                a.setTipo(Integer.parseInt(arquivoPart[1]));
+                a.setPath(arquivoPart[2]);
+                a.setInicio(Integer.parseInt(arquivoPart[3]));
+                a.setTamanho(Integer.parseInt(arquivoPart[4]));
+                a.setCriacao(arquivoPart[5]);
+                a.setId(arquivoPart[6]);
+                a.setIdInterno(a.getId());
+                
+                tamanhoConteudoArquivos += a.getTamanho();
+                
+                arquivosAux.add(a);
+                
+            }
+            
+        }
+            
+        CompArquivos ca = new CompArquivos();
+
+        Collections.sort(arquivosAux, ca);
+        
+        System.out.println("Lista Ordenada");
+        
+        byte [] novoConteudoArquivos = new byte [tamanhoConteudoArquivos];
+        
+        int pointer = 0;
+        
+        for(Arquivo a : arquivosAux) {
+            if(a.getTipo() == 1) {
+                for(int i = 0; i < a.getTamanho(); i++) {
+                    novoConteudoArquivos[pointer + i] = conteudoArquivos[a.getInicio() + i];
+                }
+                a.setInicio(pointer); // Novo inicio
+                pointer += a.getTamanho();
+                
+                novoHeader += "###" + a.getNome() + "&&&" + a.getTipo() 
+                            + "&&&" + a.getPath() + "&&&" + a.getInicio()
+                            + "&&&" + a.getTamanho() + "&&&" + a.getCriacao()
+                            + "&&&" + a.getId();
+            } else {
+                novoHeader += "###" + a.getNome() + "&&&" + a.getTipo() 
+                            + "&&&" + a.getCriacao() + "&&&" + a.getId();
+            }
+        }
+        
+        conteudoArquivos = novoConteudoArquivos;
+        header = novoHeader;
+        
+        try {
+            
+            FileOutputStream dub = new FileOutputStream(filename);
+            
+            String conteudoComHeader = header + "$$$" + new String(conteudoArquivos);
+            
+            dub.write(conteudoComHeader.getBytes());
+
+            dub.close();
+
+            // Reescrever com Hash
+            // # = Separador, $ = Final do cabeçalho                
+            arquivoComHash = gerarHashArquivo(filename) + "###"
+                    + conteudoComHeader;
+
+            dub = new FileOutputStream(filename, false);
+
+            dub.write(arquivoComHash.getBytes());
+
+            dub.close();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        montarArvore();
+        
+        this.setEnabled(true);
+        this.setCursor(Cursor.DEFAULT_CURSOR);
+        JOptionPane.showMessageDialog(null, "Desfragmentação finalizada!");
+        
+    }//GEN-LAST:event_btDesfragMouseClicked
 
     public JLabel getConteudoArquivo() {
         return conteudoArquivo;
